@@ -9,20 +9,23 @@ import json
 from pygame import gfxdraw
 import pygame
 from pygame import *
+# from src.Graph.DiGraph import DiGraph
+# from src.Graph.GraphAlgo import GraphAlgo
+
 
 # init pygame
-WIDTH, HEIGHT = 1080, 720
 
-# default port
+
+WIDTH, HEIGHT = 1080, 720
 PORT = 6666
 # server host (default localhost 127.0.0.1)
 HOST = '127.0.0.1'
+
 pygame.init()
 
 screen = display.set_mode((WIDTH, HEIGHT), depth=32, flags=RESIZABLE)
 clock = pygame.time.Clock()
 pygame.font.init()
-
 client = Client()
 client.start_connection(HOST, PORT)
 
@@ -30,6 +33,7 @@ pokemons = client.get_pokemons()
 pokemons_obj = json.loads(pokemons, object_hook=lambda d: SimpleNamespace(**d))
 
 print(pokemons)
+
 
 graph_json = client.get_graph()
 
