@@ -16,6 +16,12 @@ class Agent:
     def set_dest(self, newDest: int):
         self.dest = newDest
 
+    def set_src(self, newSrc: int):
+        self.src = newSrc
+
+    def set_pos(self, newPos: tuple):
+        self.pos = newPos
+
     def __str__(self):
         return str(self.id)
 

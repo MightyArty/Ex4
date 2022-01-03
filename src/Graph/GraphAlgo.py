@@ -9,6 +9,8 @@ from matplotlib.patches import ConnectionPatch
 from GraphAlgoInterface import GraphAlgoInterface
 from DiGraph import DiGraph
 from GraphInterface import GraphInterface
+from src.client_python.Pokemon import Pokemon
+from src.client_python.Agent import Agent
 
 
 class GraphAlgo(GraphAlgoInterface):
@@ -63,6 +65,41 @@ class GraphAlgo(GraphAlgoInterface):
         except():
             print("Error in loading from json format")
             return False
+
+    def pokemons_from_json(self, pokemons: str) -> list:
+        graph = DiGraph()
+        pokemons = json.loads(pokemons)
+        arrPokemons = pokemons["Pokemons"]
+        for p in arrPokemons:
+            value = (arrPokemons[p]["Pokemon"]["value"])
+            type = (arrPokemons[p]["Pokemon"]["type"])
+            try:
+                pos = (arrPokemons[p]["Pokemon"]["pos"])
+            except Exception:
+                pointX = random.randint(5, 50)
+                pointY = random.randint(5, 50)
+                pos = (pointX, pointY, 0.0)
+            pokemon = Pokemon(value, type, pos)
+            graph.pokemons.append(pokemon)
+
+    def agent_from_json(self, agents: str) -> dict():
+        graph = DiGraph()
+        agents = json.loads(agents)
+        arrAgents = agents["Agents"]
+        for a in arrAgents:
+            id = (arrAgents[a]["Agent"]["id"])
+            value = (arrAgents[a]["Agent"]["value"])
+            src = (arrAgents[a]["Agent"]["src"])
+            dest = (arrAgents[a]["Agent"]["dest"])
+            speed = (arrAgents[a]["Agent"]["speed"])
+            try:
+                pos = (arrAgents[a]["Agent"]["pos"])
+            except Exception:
+                pointX = random.randint(5, 50)
+                pointY = random.randint(5, 50)
+                pos = (pointX,pointY, 0.0)
+            agent = Agent(id, value, src, dest, speed, pos)
+            graph.add_agent(agent)
 
     """
         Saves the graph in JSON format to a file
