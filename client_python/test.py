@@ -12,6 +12,8 @@ import pygame
 from pygame import *
 
 # init pygame
+from src.Graph.GraphAlgo import GraphAlgo
+
 WIDTH, HEIGHT = 1080, 720
 
 # default port
@@ -68,9 +70,11 @@ def my_scale(data, x=False, y=False):
         return scale(data, 50, screen.get_height()-50, min_y, max_y)
 
 
+algo = GraphAlgo()
+
 radius = 15
 
-client.add_agent("{\"id\":6}")
+client.add_agent("{\"id\":0}")
 client.add_agent("{\"id\":1}")
 client.add_agent("{\"id\":2}")
 client.add_agent("{\"id\":3}")
@@ -82,7 +86,8 @@ client.start()
 The code below should be improved significantly:
 The GUI and the "algo" are mixed - refactoring using MVC design pattern is required.
 """
-print(client.get_agents())
+
+# print(client.get_agents())
 while client.is_running() == 'true':
     pokemons = json.loads(client.get_pokemons(),
                           object_hook=lambda d: SimpleNamespace(**d)).Pokemons
@@ -154,13 +159,16 @@ while client.is_running() == 'true':
     clock.tick(60)
 
     # choose next edge
-    for agent in agents:
+   # print(client.get_agents())
+    algo.agent_from_json(client.get_agents())
+   # algo.pokemons_from_json(client.get_pokemons())
+    print(algo.graph.agents)
+    for agent in algo.graph.agents.values():
         if agent.dest == -1:
-            next_node = (agent.src -1) % len(graph.Nodes)
-            client.choose_next_edge(
-                '{"agent_id":'+str(agent.id)+', "next_node_id":'+str(next_node)+'}')
-            ttl = client.time_to_end()
-           # print(ttl, client.get_info())
-
-    client.move()
+            List = algo.sendAgent(agent)
+            print(List)
+            for v in List:
+                print(v)
+                client.choose_next_edge('{"agent_id":' + str(agent.id) + ', "next_node_id":' + str(v) + '}')
+        client.move()
 # game over:

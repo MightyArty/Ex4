@@ -1,8 +1,8 @@
-from Edge import Edge
-from GraphInterface import GraphInterface
-from Node import Node
-from src.client_python.Pokemon import Pokemon
-from src.client_python.Agent import Agent
+from src.Graph.Edge import Edge
+from src.Graph.GraphInterface import GraphInterface
+from src.Graph.Node import Node
+from client_python.Pokemon import Pokemon
+from client_python.Agent import Agent
 
 
 class DiGraph(GraphInterface):
@@ -27,7 +27,7 @@ class DiGraph(GraphInterface):
         self.edgesMap = dict()
         self.reversEdges = dict()
         self.nodesMap = dict()
-        self.pokemons = list
+        self.pokemons = []
         self.agents = dict()
 
     def get_pokemons(self):

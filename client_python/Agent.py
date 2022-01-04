@@ -26,5 +26,4 @@ class Agent:
         return str(self.id)
 
     def __repr__(self):
-        return f"Agent (id : {self.id}, value : {self.value}, src : {self.src}, dest : {self.dest}, speed : {self.speed}, " \ 
-               f"pos : {self.pos})"
+        return f"Agent (id : {self.id}, value : {self.value}, src : {self.src}, dest : {self.dest}, speed : {self.speed}, pos : {self.pos}) "
