@@ -102,6 +102,7 @@ class GraphAlgo(GraphAlgoInterface):
                 pos = (pointX,pointY, 0.0)
             agent = Agent(id, value, src, dest, speed, pos)
             graph.add_agent(agent)
+            self.__init__(graph)
 
     """
         Saves the graph in JSON format to a file
@@ -346,7 +347,7 @@ class GraphAlgo(GraphAlgoInterface):
 
         return ans, pq
 
-    def allocateAgents(self, agents: list, pokemons: list):
+    def allocateAgents(self, agents: {}, pokemons: list):
         allocate = self.start_pos()
         pokEdges = allocate[0]
         # compares the length of agents to pokemons

@@ -22,6 +22,9 @@ class Agent:
     def set_pos(self, newPos: tuple):
         self.pos = newPos
 
+    def get_pos(self):
+        return self.pos
+
     def __str__(self):
         return str(self.id)
 
