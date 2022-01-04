@@ -5,7 +5,6 @@ from client import Client
 from src.Graph.GraphAlgo import GraphAlgo
 from src.Graph.DiGraph import DiGraph
 from Pokemon import Pokemon
-from src.client_python.student_code import my_scale
 
 WIDTH, HEIGHT = 1080, 720
 PORT = 6666
@@ -44,25 +43,14 @@ while client.is_running() == 'true':
         if event.type == pygame.QUIT:
             pygame.quit()
             exit(0)
+    """
+    Need to work on GUIII
+    """
 
-    # draw agents
-    for agent in algo.graph.agents:
-        X, Y, Z = agent.get_pos()
-        X = my_scale(X, x=True)
-        Y = my_scale(Y, y=True)
-
-    # draw pokemons
-    for pokemon in algo.graph.pokemons:
-        X, Y, Z = pokemon.get_pos()
-        X = my_scale(X, x=True)
-        Y = my_scale(Y, y=True)
-
-
-    for a in algo.graph.agents:
-        if a.dest == -1:
-            next = (a.src - 1) % algo.get_graph().v_size()
-            client.choose_next_edge('{"agent_id":' + str(a.id) + ', "next_node_id":' + str(next) + '}')
-            ttl = client.time_to_end()
-            print(ttl, client.get_info())
-            print(myGraph.pokoemons)
+    # need to work on allocate agents
+    for agent in algo.graph.agents.values():
+        if agent.dest == -1:
+            List = algo.sendAgent(agent)
+            for v in List:
+                client.choose_next_edge('{"agent_id":'+str(agent.id)+', "next_node_id":'+str(v)+'}')
     client.move()
