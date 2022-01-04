@@ -50,7 +50,7 @@ while client.is_running() == 'true':
     # need to work on allocate agents
     for a in myGraph.agents.values():
         if a.dest != -1:
-            # find the agent
+
 
 
 
