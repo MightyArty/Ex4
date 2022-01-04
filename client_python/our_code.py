@@ -1,3 +1,5 @@
+from asyncio import PriorityQueue
+
 import client
 from src.Graph import DiGraph, Edge
 from src.Graph.GraphAlgo import GraphAlgo
@@ -9,6 +11,8 @@ algo = GraphAlgo()
 
 def startPos() -> list:
     ans = list
+    sizeOfDup = {}
+    pq = PriorityQueue()
     for p in pokemons:
         for Dict in algo.graph.edgesMap().values():
             for edge in Dict.values():
@@ -16,11 +20,22 @@ def startPos() -> list:
                 destPos = algo.graph.nodesMap[edge.dest].pos
                 if p.isOn(srcPos[0], srcPos[1], destPos[0], destPos[1]):
                     ans.append(edge)
-    return ans
+                    if sizeOfDup[edge] is None:
+                        sizeOfDup[edge] = 1
+                        pq.put(1, edge)
+                    else:
+                        pq.get()
+                        size = sizeOfDup[edge] + 1
+                        sizeOfDup[edge] = size
+                        num = sizeOfDup[edge]
+                        pq.put(num * (-1), edge)
+
+    return ans, pq
 
 
 def allocateAgents():
-    pokEdges = startPos()
+    allocate = startPos()
+    pokEdges = allocate[0]
     # compares the length of agents to pokemons
     if len(agents) >= len(pokemons):
         # setting the agents to be on the edge's pokemon src
@@ -38,7 +53,7 @@ def allocateAgents():
             agents[index].setSrc = center[0]
             index += 1
     else:
-
+        pq = allocate[1]
 
 
 while client.is_running() == 'true':
