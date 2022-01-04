@@ -10,7 +10,7 @@ class DiGraph(GraphInterface):
     """
     Main constructor
     """
-    def __int__(self, nodesMap: {}, edgesMap: {}, reversEdges: {}, agents: {}, pokemons: {}):
+    def __int__(self, nodesMap: {}, edgesMap: {}, reversEdges: {}, agents: {}, pokemons: list):
         self.nodesMap = nodesMap
         self.edgesMap = edgesMap
         self.reversEdges = reversEdges

@@ -3,6 +3,7 @@
 OOP - Ex4
 Very simple GUI example for python client to communicates with the server and "play the game!"
 """
+import random
 from types import SimpleNamespace
 from client import Client
 import json
@@ -24,18 +25,19 @@ pygame.init()
 screen = display.set_mode((WIDTH, HEIGHT), depth=32, flags=RESIZABLE)
 clock = pygame.time.Clock()
 pygame.font.init()
+FONT = pygame.font.SysFont('Arial', 20, bold=True)
 
 client = Client()
 client.start_connection(HOST, PORT)
 
-pokemons = client.get_pokemons()
-pokemons_obj = json.loads(pokemons, object_hook=lambda d: SimpleNamespace(**d))
-
-print(pokemons)
-
 graph_json = client.get_graph()
+algo = GraphAlgo()
 
-FONT = pygame.font.SysFont('Arial', 20, bold=True)
+algo.load_json(graph_json)
+pokemons = client.get_pokemons()
+algo.pokemons_from_json(pokemons)
+
+
 # load the json string into SimpleNamespace Object
 
 graph = json.loads(
@@ -69,18 +71,12 @@ def my_scale(data, x=False, y=False):
         return scale(data, 50, screen.get_height() - 50, min_y, max_y)
 
 
-algo = GraphAlgo()
-id = json.loads(client.get_graph())
-algo.load_graph(id)
-
-pokemons_json = client.get_pokemons()
-algo.pokemons_from_json(pokemons_json)
 radius = 15
 
 client.add_agent("{\"id\":0}")
-# client.add_agent("{\"id\":1}")
-# client.add_agent("{\"id\":2}")
-# client.add_agent("{\"id\":3}")
+client.add_agent("{\"id\":1}")
+client.add_agent("{\"id\":2}")
+client.add_agent("{\"id\":3}")
 
 # this commnad starts the server - the game is running now
 client.start()
@@ -89,19 +85,28 @@ client.start()
 The code below should be improved significantly:
 The GUI and the "algo" are mixed - refactoring using MVC design pattern is required.
 """
-print("aaa"+str(algo.graph))
+
 # print(client.get_agents())
 while client.is_running() == 'true':
-    pokemons = json.loads(client.get_pokemons(),
-                          object_hook=lambda d: SimpleNamespace(**d)).Pokemons
-    pokemons = [p.Pokemon for p in pokemons]
+    algo.agent_from_json(client.get_agents())
+    print(algo.graph.get_agents())
+    algo.pokemons_from_json(client.get_pokemons())
+    print(algo.graph.get_pokemons())
+
+
+
+    # pokemons = json.loads(client.get_pokemons(),
+    #                       object_hook=lambda d: SimpleNamespace(**d)).Pokemons
+    # pokemons = [p.Pokemon for p in pokemons]
+    pokemons = algo.graph.get_pokemons()
     for p in pokemons:
         x, y, _ = p.pos.split(',')
         p.pos = SimpleNamespace(x=my_scale(
             float(x), x=True), y=my_scale(float(y), y=True))
-    agents = json.loads(client.get_agents(),
-                        object_hook=lambda d: SimpleNamespace(**d)).Agents
-    agents = [agent.Agent for agent in agents]
+    # agents = json.loads(client.get_agents(),
+    #                     object_hook=lambda d: SimpleNamespace(**d)).Agents
+    # agents = [agent.Agent for agent in agents]
+    agents = algo.graph.get_agents()
     for a in agents:
         x, y, _ = a.pos.split(',')
         a.pos = SimpleNamespace(x=my_scale(
@@ -116,9 +121,9 @@ while client.is_running() == 'true':
     screen.fill(Color(0, 0, 0))
 
     # draw nodes
-    for n in graph.Nodes:
-        x = my_scale(n.pos.x, x=True)
-        y = my_scale(n.pos.y, y=True)
+    for n in algo.graph.nodesMap.values():
+        x = my_scale(n.pos[0], x=True)
+        y = my_scale(n.pos[1], y=True)
 
         # its just to get a nice antialiased circle
         gfxdraw.filled_circle(screen, int(x), int(y),
@@ -132,20 +137,21 @@ while client.is_running() == 'true':
         screen.blit(id_srf, rect)
 
     # draw edges
-    for e in graph.Edges:
-        # find the edge nodes
-        src = next(n for n in graph.Nodes if n.id == e.src)
-        dest = next(n for n in graph.Nodes if n.id == e.dest)
+    for i in algo.graph.edgesMap.values():
+        for e in i.values():
+            # find the edge nodes
+            src = next(n for n in algo.graph.nodesMap.values() if n.id == e.src)
+            dest = next(n for n in algo.graph.nodesMap.values() if n.id == e.dest)
 
-        # scaled positions
-        src_x = my_scale(src.pos.x, x=True)
-        src_y = my_scale(src.pos.y, y=True)
-        dest_x = my_scale(dest.pos.x, x=True)
-        dest_y = my_scale(dest.pos.y, y=True)
+            # scaled positions
+            src_x = my_scale(src.pos[0], x=True)
+            src_y = my_scale(src.pos[1], y=True)
+            dest_x = my_scale(dest.pos[0], x=True)
+            dest_y = my_scale(dest.pos[1], y=True)
 
-        # draw the line
-        pygame.draw.line(screen, Color(61, 72, 126),
-                         (src_x, src_y), (dest_x, dest_y))
+            # draw the line
+            pygame.draw.line(screen, Color(61, 72, 126),
+                             (src_x, src_y), (dest_x, dest_y))
 
     # draw agents
     for agent in agents:
@@ -161,15 +167,13 @@ while client.is_running() == 'true':
     # refresh rate
     clock.tick(60)
 
-    # choose next edge
-    # print(client.get_agents())
-    algo.agent_from_json(client.get_agents())
-    # algo.pokemons_from_json(client.get_pokemons())
-    print("aaa" + str(algo.graph))
+    print('david is gay')
     for agent in algo.graph.agents.values():
         if agent.dest == -1:
             List = algo.sendAgent(agent)
+            print(List)
             for v in List:
+                print(v)
                 client.choose_next_edge('{"agent_id":' + str(agent.id) + ', "next_node_id":' + str(v) + '}')
         client.move()
 # game over:
