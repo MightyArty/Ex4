@@ -1,7 +1,7 @@
 import pygame
 from pygame import *
 import json
-from client import Client
+import client
 from src.Graph.GraphAlgo import GraphAlgo
 from src.Graph.DiGraph import DiGraph
 from Pokemon import Pokemon
@@ -15,7 +15,6 @@ screen = display.set_mode((WIDTH, HEIGHT), depth=32, flags=RESIZABLE)
 clock = pygame.time.Clock()
 pygame.font.init()
 FONT = pygame.font.SysFont('Arial', 20, bold=True)
-client = Client()
 client.start_connection(HOST, PORT)
 graph_json = client.get_graph()
 algo = GraphAlgo()  # our algo of the graph

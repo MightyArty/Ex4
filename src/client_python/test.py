@@ -1,4 +1,3 @@
-
 """
 @author AchiyaZigi
 OOP - Ex4
@@ -46,7 +45,7 @@ for n in graph.Nodes:
     x, y, _ = n.pos.split(',')
     n.pos = SimpleNamespace(x=float(x), y=float(y))
 
- # get data proportions
+# get data proportions
 min_x = min(list(graph.Nodes), key=lambda n: n.pos.x).pos.x
 min_y = min(list(graph.Nodes), key=lambda n: n.pos.y).pos.y
 max_x = max(list(graph.Nodes), key=lambda n: n.pos.x).pos.x
@@ -58,7 +57,7 @@ def scale(data, min_screen, max_screen, min_data, max_data):
     get the scaled data with proportions min_data, max_data
     relative to min and max screen dimentions
     """
-    return ((data - min_data) / (max_data-min_data)) * (max_screen - min_screen) + min_screen
+    return ((data - min_data) / (max_data - min_data)) * (max_screen - min_screen) + min_screen
 
 
 # decorate scale with the correct values
@@ -67,17 +66,21 @@ def my_scale(data, x=False, y=False):
     if x:
         return scale(data, 50, screen.get_width() - 50, min_x, max_x)
     if y:
-        return scale(data, 50, screen.get_height()-50, min_y, max_y)
+        return scale(data, 50, screen.get_height() - 50, min_y, max_y)
 
 
 algo = GraphAlgo()
+id = json.loads(client.get_graph())
+algo.load_graph(id)
 
+pokemons_json = client.get_pokemons()
+algo.pokemons_from_json(pokemons_json)
 radius = 15
 
 client.add_agent("{\"id\":0}")
-client.add_agent("{\"id\":1}")
-client.add_agent("{\"id\":2}")
-client.add_agent("{\"id\":3}")
+# client.add_agent("{\"id\":1}")
+# client.add_agent("{\"id\":2}")
+# client.add_agent("{\"id\":3}")
 
 # this commnad starts the server - the game is running now
 client.start()
@@ -86,7 +89,7 @@ client.start()
 The code below should be improved significantly:
 The GUI and the "algo" are mixed - refactoring using MVC design pattern is required.
 """
-
+print("aaa"+str(algo.graph))
 # print(client.get_agents())
 while client.is_running() == 'true':
     pokemons = json.loads(client.get_pokemons(),
@@ -159,16 +162,14 @@ while client.is_running() == 'true':
     clock.tick(60)
 
     # choose next edge
-   # print(client.get_agents())
+    # print(client.get_agents())
     algo.agent_from_json(client.get_agents())
-   # algo.pokemons_from_json(client.get_pokemons())
-    print(algo.graph.agents)
+    # algo.pokemons_from_json(client.get_pokemons())
+    print("aaa" + str(algo.graph))
     for agent in algo.graph.agents.values():
         if agent.dest == -1:
             List = algo.sendAgent(agent)
-            print(List)
             for v in List:
-                print(v)
                 client.choose_next_edge('{"agent_id":' + str(agent.id) + ', "next_node_id":' + str(v) + '}')
         client.move()
 # game over:

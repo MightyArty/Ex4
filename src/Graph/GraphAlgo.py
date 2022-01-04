@@ -67,6 +67,19 @@ class GraphAlgo(GraphAlgoInterface):
             print("Error in loading from json format")
             return False
 
+    def load_graph(self, object: dict):
+        graph = DiGraph()
+        Edges: list
+        Nodes: list
+        for node in object['Nodes']:
+            out = node["pos"].split(',')
+            pos = (float(out[0]), float(out[1]), float(out[2]))
+            graph.add_node(node["id"], pos)
+        for edge in object['Edges']:
+            graph.add_edge(edge["src"], edge["dest"], edge["w"])
+        self.graph = graph
+
+
     def pokemons_from_json(self, pokemons: str) -> list:
         graph = DiGraph()
         pokemons = json.loads(pokemons)
@@ -103,7 +116,6 @@ class GraphAlgo(GraphAlgoInterface):
             agent = Agent(id, value, src, dest, speed, pos)
             graph.add_agent(agent)
         self.__init__(graph)
-
     """
         Saves the graph in JSON format to a file
         @param file_name: The path to the out file
@@ -375,7 +387,7 @@ class GraphAlgo(GraphAlgoInterface):
     #     min_value = float('inf')
     #     for p in graph.pokemons:
     def sendAgent(self, agent: Agent):
-        path = list
+        path = []
         for pokemon in self.graph.pokemons:
             for Dict in self.graph.edgesMap.values():
                 for edge in Dict.values():
