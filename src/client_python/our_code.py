@@ -1,7 +1,6 @@
 from asyncio import PriorityQueue
 
 import client
-from src.Graph import DiGraph, Edge
 from src.Graph.GraphAlgo import GraphAlgo
 
 pokemons = {}

@@ -1,6 +1,5 @@
 import copy
 import json
-import math
 import queue
 import random
 from typing import List
@@ -11,8 +10,8 @@ from matplotlib.patches import ConnectionPatch
 from src.Graph.GraphAlgoInterface import GraphAlgoInterface
 from src.Graph.DiGraph import DiGraph
 from src.Graph.GraphInterface import GraphInterface
-from client_python.Pokemon import Pokemon
-from client_python.Agent import Agent
+from src.client_python.Pokemon import Pokemon
+from src.client_python.Agent import Agent
 
 
 class GraphAlgo(GraphAlgoInterface):

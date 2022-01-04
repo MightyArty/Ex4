@@ -1,8 +1,8 @@
 from src.Graph.Edge import Edge
 from src.Graph.GraphInterface import GraphInterface
 from src.Graph.Node import Node
-from client_python.Pokemon import Pokemon
-from client_python.Agent import Agent
+from src.client_python.Pokemon import Pokemon
+from src.client_python.Agent import Agent
 
 
 class DiGraph(GraphInterface):
