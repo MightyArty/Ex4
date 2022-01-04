@@ -1,17 +1,35 @@
 from Edge import Edge
 from GraphInterface import GraphInterface
 from Node import Node
+from src.client_python.Pokemon import Pokemon
+from src.client_python.Agent import Agent
 
 
 class DiGraph(GraphInterface):
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.vertexSize = 0
         self.edgeSize = 0
         self.mc = 0
         self.edgesMap = dict()
         self.reversEdges = dict()
         self.nodesMap = dict()
+        self.pokemons = list
+        self.agents = dict()
+
+    def get_pokemons(self):
+        return self.pokemons
+
+    def get_agents(self):
+        return self.agents
+
+    def add_agent(self, agent: Agent) -> bool:
+        self.agents[agent.id] = agent
+        return True
+
+    def remove_pokemon(self, pokemon: Pokemon) -> bool:
+        del self.pokemons[pokemon]
+        return True
 
     def v_size(self) -> int:
         return len(self.nodesMap)
@@ -139,4 +157,4 @@ class DiGraph(GraphInterface):
         return str({self.nodesMap.values()})
 
     def __repr__(self):
-        return f"The graph: {self.nodesMap.values()}"
+        return f"Nodes -> {self.nodesMap}, Edges -> {self.edgesMap}, Agents -> {self.agents}, Pokemons -> {self.pokemons}"
