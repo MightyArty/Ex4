@@ -3,6 +3,7 @@ from pygame import *
 import json
 from client import Client
 from src.Graph.GraphAlgo import GraphAlgo
+from src.Graph.DiGraph import DiGraph
 from Pokemon import Pokemon
 
 WIDTH, HEIGHT = 1080, 720
@@ -37,5 +38,21 @@ while client.is_running() == 'true':
     # agents from json
     agents_json = client.get_agents()
     g.agent_from_json(agents_json)
+    # check events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit(0)
+    """
+    Need to work on GUIII
+    """
+
+    # need to work on allocate agents
+    for a in myGraph.agents.values():
+        if a.dest != -1:
+
+
+
+
 
 
