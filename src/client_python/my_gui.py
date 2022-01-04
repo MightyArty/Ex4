@@ -44,7 +44,7 @@ while client.is_running() == 'true':
             pygame.quit()
             exit(0)
     """
-    Need to work on GUI
+    Need to work on GUIII
     """
 
     # need to work on allocate agents
