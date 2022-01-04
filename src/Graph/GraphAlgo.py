@@ -1,5 +1,7 @@
 import copy
 import json
+import math
+import queue
 import random
 from typing import List
 
@@ -319,6 +321,63 @@ class GraphAlgo(GraphAlgoInterface):
             ax1.add_artist(edge)
         plt.tight_layout()
         plt.show()
+
+    def start_pos(self, pok: list):
+        algo = GraphAlgo()
+        ans = list
+        sizeOfDup = {}
+        pq = queue.PriorityQueue()
+        for p in pok:
+            for Dict in algo.graph.edgesMap.values():
+                for edge in Dict.values():
+                    srcPos = algo.graph.nodesMap[edge.src].pos
+                    destPos = algo.graph.nodesMap[edge.dest].pos
+                    if p.isOn(srcPos[0], srcPos[1], destPos[0], destPos[1]):
+                        ans.append(edge)
+                        if sizeOfDup[edge] is None:
+                            sizeOfDup[edge] = 1
+                            pq.put(1, edge)
+                        else:
+                            pq.get()
+                            size = sizeOfDup[edge] + 1
+                            sizeOfDup[edge] = size
+                            num = sizeOfDup[edge]
+                            pq.put(num * (-1), edge)
+
+        return ans, pq
+
+    def allocateAgents(self, agents: list, pokemons: list):
+        allocate = self.start_pos()
+        pokEdges = allocate[0]
+        # compares the length of agents to pokemons
+        if len(agents) >= len(pokemons):
+            # setting the agents to be on the edge's pokemon src
+            for index in range(len(pokEdges)):
+                pokSrc = pokEdges[index].src
+                pokDest = pokEdges[index].dest
+                agents[index].set_src(self.graph.nodesMap[pokSrc].src)
+                agents[index].set_dest(self.graph.nodesMap[pokDest].dest)
+                agents[index].set_pos(self.graph.nodesMap[pokSrc].pos)
+            center = self.centerPoint()
+            index = len(pokEdges)
+            # deals with the leftover agents
+            while index < len(agents):
+                agents[index].setPos = self.graph.nodesMap[center[0]].pos
+                agents[index].setSrc = center[0]
+                index += 1
+        else:
+            pq = allocate[1]
+
+    def find_agent(self, agent: Agent):
+        graph = self.get_graph()
+        speed = agent.speed
+        min_value = float('inf')
+        for p in graph.pokemons:
+
+
+
+
+
 
 
 

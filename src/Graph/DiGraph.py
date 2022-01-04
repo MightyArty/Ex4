@@ -7,6 +7,19 @@ from src.client_python.Agent import Agent
 
 class DiGraph(GraphInterface):
 
+    """
+    Main constructor
+    """
+    def __int__(self, nodesMap: {}, edgesMap: {}, reversEdges: {}, agents: {}, pokemons: {}):
+        self.nodesMap = nodesMap
+        self.edgesMap = edgesMap
+        self.reversEdges = reversEdges
+        self.agents = agents
+        self.pokemons = pokemons
+
+    """
+    Empty constructor 
+    """
     def __init__(self) -> None:
         self.vertexSize = 0
         self.edgeSize = 0
