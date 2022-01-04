@@ -32,26 +32,28 @@ client.start_connection(HOST, PORT)
 
 graph_json = client.get_graph()
 algo = GraphAlgo()
-
-algo.load_json(graph_json)
-pokemons = client.get_pokemons()
+object = json.loads(client.get_graph())
+algo.load_graph(object)
+print(algo.graph)
+pokemons = json.loads(client.get_pokemons())
+print(pokemons)
 algo.pokemons_from_json(pokemons)
 
 
 # load the json string into SimpleNamespace Object
 
-graph = json.loads(
-    graph_json, object_hook=lambda json_dict: SimpleNamespace(**json_dict))
+# graph = json.loads(
+#     graph_json, object_hook=lambda json_dict: SimpleNamespace(**json_dict))
 
-for n in graph.Nodes:
+for n in algo.graph.nodesMap:
     x, y, _ = n.pos.split(',')
     n.pos = SimpleNamespace(x=float(x), y=float(y))
 
 # get data proportions
-min_x = min(list(graph.Nodes), key=lambda n: n.pos.x).pos.x
-min_y = min(list(graph.Nodes), key=lambda n: n.pos.y).pos.y
-max_x = max(list(graph.Nodes), key=lambda n: n.pos.x).pos.x
-max_y = max(list(graph.Nodes), key=lambda n: n.pos.y).pos.y
+# min_x = min(list(algo.graph.nodesMap.values()), key=lambda n: n.pos.x).pos.x
+# min_y = min(list(algo.graph.nodesMap.values()), key=lambda n: n.pos[1]).pos[1]
+# max_x = max(list(algo.graph.nodesMap.values()), key=lambda n: n.pos[0]).pos[0]
+# max_y = max(list(algo.graph.nodesMap.values()), key=lambda n: n.pos[1]).pos[1]
 
 
 def scale(data, min_screen, max_screen, min_data, max_data):
@@ -90,8 +92,8 @@ The GUI and the "algo" are mixed - refactoring using MVC design pattern is requi
 while client.is_running() == 'true':
     algo.agent_from_json(client.get_agents())
     print(algo.graph.get_agents())
-    algo.pokemons_from_json(client.get_pokemons())
-    print(algo.graph.get_pokemons())
+    pokemons = json.loads(client.get_pokemons())
+    algo.pokemons_from_json(pokemons)
 
 
 
@@ -156,7 +158,7 @@ while client.is_running() == 'true':
     # draw agents
     for agent in agents:
         pygame.draw.circle(screen, Color(122, 61, 23),
-                           (int(agent.pos.x), int(agent.pos.y)), 10)
+                           (int(agent.pos[0]), int(agent.pos[1])), 10)
     # draw pokemons (note: should differ (GUI wise) between the up and the down pokemons (currently they are marked in the same way).
     for p in pokemons:
         pygame.draw.circle(screen, Color(0, 255, 255), (int(p.pos.x), int(p.pos.y)), 10)
@@ -167,13 +169,14 @@ while client.is_running() == 'true':
     # refresh rate
     clock.tick(60)
 
-    print('david is gay')
+    print(algo.graph)
+    print(algo.graph.agents)
     for agent in algo.graph.agents.values():
         if agent.dest == -1:
             List = algo.sendAgent(agent)
-            print(List)
+
             for v in List:
-                print(v)
+
                 client.choose_next_edge('{"agent_id":' + str(agent.id) + ', "next_node_id":' + str(v) + '}')
         client.move()
 # game over:

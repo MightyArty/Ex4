@@ -79,21 +79,22 @@ class GraphAlgo(GraphAlgoInterface):
             graph.add_edge(edge["src"], edge["dest"], edge["w"])
         self.graph = graph
 
-    def pokemons_from_json(self, pokemons: str) -> list:
+    def pokemons_from_json(self, pokemons: dict) -> list:
         graph = DiGraph()
-        pokemons = json.loads(pokemons)
-        arrPokemons = pokemons["Pokemons"]
-        for p in arrPokemons:
-            value = (p["Pokemon"]["value"])
-            type = (p["Pokemon"]["type"])
-            try:
-                pos = (p["Pokemon"]["pos"])
-            except Exception:
-                pointX = random.randint(5, 50)
-                pointY = random.randint(5, 50)
-                pos = (pointX, pointY, 0.0)
+        for p in pokemons['Pokemons']:
+            value = (p['Pokemon']["value"])
+
+            type = (p['Pokemon']["type"])
+            out = p['Pokemon']["pos"].split(',')
+            pos = (float(out[0]), float(out[1]), float(out[2]))
+
+            # except Exception:
+            #     pointX = random.randint(5, 50)
+            #     pointY = random.randint(5, 50)
+            #     pos = (pointX, pointY, 0.0)
             pokemon = Pokemon(value, type, pos)
             graph.pokemons.append(pokemon)
+            print(graph.pokemons)
         self.__init__(graph)
 
     def agent_from_json(self, agents: str) -> dict():
