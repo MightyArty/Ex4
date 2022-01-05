@@ -158,10 +158,11 @@ while client.is_running() == 'true':
     clock.tick(60)
 
     # choose next edge for the agent
-    # print(algo.graph.get_agents())
+    print(algo.graph.get_agents())
     for pok in algo.graph.pokemons:
         for agent in algo.graph.agents.values():
             if agent.dest == -1:
+
                 findArr = algo.find_agent(pok)
                 print(findArr[1])
                 for next_node in findArr[1]:
