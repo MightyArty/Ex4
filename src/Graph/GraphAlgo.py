@@ -380,20 +380,50 @@ class GraphAlgo(GraphAlgoInterface):
         else:
             pq = allocate[1]
 
-    # def find_agent(self, agent: Agent):
-    #     graph = self.get_graph()
-    #     speed = agent.speed
-    #     min_value = float('inf')
-    #     for p in graph.pokemons:
-    def sendAgent(self, agent: Agent):
-        path = list
-        for pokemon in self.graph.pokemons:
-            for Dict in self.graph.edgesMap.values():
-                for edge in Dict.values():
-                    srcPos = self.graph.nodesMap[edge.src].pos
-                    destPos = self.graph.nodesMap[edge.dest].pos
-                    if pokemon.isOn(srcPos[0], srcPos[1], destPos[0], destPos[1]):
-                        path = self.shortest_path(agent.src, edge.src)
-                        path.append(edge.dest)
+    """
+    Calculating the time that takes for the agent to catch the pokemon
+    @:param agent, src of the pokemon
+    @:return the best time and list of shortest path
+    """
+    def time_to_catch(self, agent: Agent, srcPok: int) -> float and list:
+        path = self.shortest_path(agent.src, srcPok)
+        distance = path[0]
+        arr = path[1]
+        speed = agent.speed
+        return float(distance / speed), arr
 
-        return path
+    """
+    Allocating the pokemon (only if the pokemon is on some edge)
+    @:param pokemon
+    @:return edge
+    """
+    def find_pokemon(self, pokemon: Pokemon):
+        for edge in self.graph.edgesMap.values():
+            for runner in edge.values():
+                srcPos = self.graph.nodesMap[runner.src].pos
+                destPos = self.graph.nodesMap[runner.dest].pos
+                if pokemon.isOn(srcPos[0], srcPos[1], destPos[0], destPos[1]):
+                    return runner
+
+    """
+    Finding the best agent for each pokemon
+    @:param pokemon
+    @:return time and list of nodes to visit
+    """
+    def find_agent(self, pokemon: Pokemon):
+        out = list
+        arr = self.graph.agents
+        minimum = float('inf')
+        temp = None
+        edge = self.find_pokemon(pokemon)
+        for agent in arr.values():
+            time = self.time_to_catch(agent, edge.src)
+            real_time = time[0]
+            out = time[1]
+            if real_time < minimum:
+                minimum = real_time
+                temp = agent
+                out.append(edge.dest)
+        return temp, out
+
+

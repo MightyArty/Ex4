@@ -81,15 +81,14 @@ algo.pokemons_from_json(pokOb)
 print(algo.graph.get_agents())
 print(algo.graph.get_pokemons())
 
-print('-------------A-D-L-----------------')
 
 while client.is_running() == 'true':
     pkOb = json.loads(client.get_pokemons())
     agOb = json.loads(client.get_agents())
     algo.agent_from_json(agOb)
     algo.pokemons_from_json(pkOb)
-    print(algo.graph.get_agents())
-    print(algo.graph.get_pokemons())
+    # print(algo.graph.get_agents())
+    # print(algo.graph.get_pokemons())
 
     # check events
     for event in pygame.event.get():
@@ -98,7 +97,7 @@ while client.is_running() == 'true':
             exit(0)
 
     # refresh surface
-    screen.fill(Color(0, 0, 0))
+    screen.fill(pygame.Color(0, 0, 0))
 
     # draw nodes
     for node in algo.get_graph().get_all_v().values():
@@ -141,24 +140,27 @@ while client.is_running() == 'true':
         pygame.draw.circle(screen, Color(122, 61, 23),
                            (int(x), int(y)), 10)
     # draw pokemons
-    # for pok in algo.graph.pokemons:
-    #     x_, y_, z_ = pok.
+    for pok in algo.graph.pokemons:
+        x_, y_, z_ = pok.get_pos()
+        x = my_scale(x_, x=True)
+        y = my_scale(y_, y=True)
+        pygame.draw.circle(screen, Color(0, 255, 255),
+                           (int(x), int(y)), 10)
 
     display.update()
 
     clock.tick(60)
 
     # choose next edge for the agent
-    print(algo.graph.get_agents())
+    # print(algo.graph.get_agents())
 
     for agent in algo.graph.agents.values():
-        print(type(agent.dest))
         if agent.dest == -1:
             next_node = (agent.src - 1) % algo.get_graph().v_size()
             client.choose_next_edge(
                 '{"agent_id":' + str(agent.id) + ', "next_node_id":' + str(next_node) + '}')
         ttl = client.time_to_end()
         print(ttl, client.get_info())
-        print(algo.graph.pokemons)
+        # print(algo.graph.pokemons)
 
     client.move()
