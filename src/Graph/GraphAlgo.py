@@ -430,3 +430,7 @@ class GraphAlgo(GraphAlgoInterface):
                 out = time[1]
                 out.append(edge.dest)
         return temp, out
+
+    # if the src of the agent == dest of pokemon
+    # then go to the src of the pokemon
+    # and then add the dest of the pokemon
