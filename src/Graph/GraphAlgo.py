@@ -202,7 +202,7 @@ class GraphAlgo(GraphAlgoInterface):
             while index != id1:
                 ansArr.append(vertexDirection[index].id)
                 index = vertexDirection[index].id
-           # ansArr.pop()
+            # ansArr.pop()
             ansArr.reverse()
             return minWeight, ansArr
         except Exception:
@@ -387,11 +387,11 @@ class GraphAlgo(GraphAlgoInterface):
     @:return the best time and list of shortest path
     """
 
-    def time_to_catch(self, agent: Agent, srcPok: int) -> float and list:
-        path = self.shortest_path(agent.src, srcPok)
+    def time_to_catch(self, speed, src, srcPok: int) -> float and list:
+        path = self.shortest_path(src, srcPok)
         distance = path[0]
         arr = path[1]
-        speed = agent.speed
+        # speed = agent.speed
         return float(distance / speed), arr
 
     """
@@ -400,12 +400,19 @@ class GraphAlgo(GraphAlgoInterface):
     @:return edge
     """
 
-    def find_pokemon(self, pokemon: Pokemon):
+    def find_pokemon_edge(self, pokemon: Pokemon):
         for edge in self.graph.edgesMap.values():
             for runner in edge.values():
                 srcPos = self.graph.nodesMap[runner.src].pos
                 destPos = self.graph.nodesMap[runner.dest].pos
                 if pokemon.isOn(srcPos[0], srcPos[1], destPos[0], destPos[1]):
+                    if pokemon.type == -1:
+
+                        temp = self.graph.edgesMap[runner.dest]
+                        runner = temp[runner.src]
+                    else:
+                        temp = self.graph.edgesMap[runner.src]
+                        runner = temp[runner.dest]
                     return runner
 
     """
@@ -419,10 +426,13 @@ class GraphAlgo(GraphAlgoInterface):
         arr = self.graph.agents
         minimum = float('inf')
         temp = None
-        edge = self.find_pokemon(pokemon)
+        edge = self.find_pokemon_edge(pokemon)
         print(edge)
         for agent in arr.values():
-            time = self.time_to_catch(agent, edge.src)
+            if agent.src == edge.dest:
+                time = self.time_to_catch(agent.speed, edge.src, edge.dest)
+            else:
+                time = self.time_to_catch(agent.speed, agent.src, edge.dest)
             real_time = time[0]
             if real_time < minimum:
                 minimum = real_time
