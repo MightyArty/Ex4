@@ -97,18 +97,18 @@ class GraphAlgo(GraphAlgoInterface):
             print(graph.pokemons)
         self.__init__(graph)
 
-    def agent_from_json(self, agents: str) -> dict():
+    def agent_from_json(self, agents: dict) -> dict():
         graph = DiGraph()
-        agents = json.loads(agents)
-        arrAgents = agents["Agents"]
-        for a in arrAgents:
-            id = (a["Agent"]["id"])
-            value = (a["Agent"]["value"])
-            src = (a["Agent"]["src"])
-            dest = (a["Agent"]["dest"])
-            speed = (a["Agent"]["speed"])
+
+        for a in agents['Agents']:
+            id = (a['Agent']["id"])
+            value = (a['Agent']["value"])
+            src = (a['Agent']["src"])
+            dest = (a['Agent']["dest"])
+            speed = (a['Agent']["speed"])
             try:
-                pos = (a["Agent"]["pos"])
+                out = (a['Agent']["pos"].split(','))
+                pos = (float(out[0]), float(out[1]), float(out[2]))
             except Exception:
                 pointX = random.randint(5, 50)
                 pointY = random.randint(5, 50)
@@ -205,9 +205,9 @@ class GraphAlgo(GraphAlgoInterface):
                 ansArr.append(vertexDirection[index].tag)
                 index = vertexDirection[index].id
             ansArr.reverse()
-            return ansArr
+            return minWeight, ansArr
         except Exception:
-            return ansArr
+            return -1, ansArr
 
     """
         Finds the shortest path that visits all the nodes in the list
@@ -389,13 +389,16 @@ class GraphAlgo(GraphAlgoInterface):
     #     for p in graph.pokemons:
     def sendAgent(self, agent: Agent):
         path = list
-        for pokemon in self.graph.pokemons:
-            for Dict in self.graph.edgesMap.values():
-                for edge in Dict.values():
-                    srcPos = self.graph.nodesMap[edge.src].pos
-                    destPos = self.graph.nodesMap[edge.dest].pos
-                    if pokemon.isOn(srcPos[0], srcPos[1], destPos[0], destPos[1]):
-                        path = self.shortest_path(agent.src, edge.src)
-                        path.append(edge.dest)
-
+        if agent.dest == -1:
+            for pokemon in self.graph.pokemons:
+                for Dict in self.graph.edgesMap.values():
+                    for edge in Dict.values():
+                        srcPos = self.graph.nodesMap[edge.src].pos
+                        destPos = self.graph.nodesMap[edge.dest].pos
+                        if pokemon.isOn(srcPos[0], srcPos[1], destPos[0], destPos[1]):
+                            tempPath = self.shortest_path(agent.src, edge.src)
+                            path = tempPath[0]
+                            path.append(edge.dest)
+        else:
+            a = 1
         return path

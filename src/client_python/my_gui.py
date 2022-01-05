@@ -51,5 +51,5 @@ while client.is_running() == 'true':
         if agent.dest == -1:
             List = algo.sendAgent(agent)
             for v in List:
-                client.choose_next_edge('{"agent_id":'+str(agent.id)+', "next_node_id":'+str(v)+'}')
+                client.choose_next_edge('{"agent_id":' + str(agent.id) + ', "next_node_id":' + str(v) + '}')
     client.move()
