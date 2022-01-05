@@ -80,7 +80,7 @@ class GraphAlgo(GraphAlgoInterface):
         self.graph = graph
 
     def pokemons_from_json(self, pokemons: dict) -> list:
-        graph = DiGraph()
+        # graph = DiGraph()
         for p in pokemons['Pokemons']:
             value = (p['Pokemon']["value"])
 
@@ -93,29 +93,27 @@ class GraphAlgo(GraphAlgoInterface):
             #     pointY = random.randint(5, 50)
             #     pos = (pointX, pointY, 0.0)
             pokemon = Pokemon(value, type, pos)
-            graph.pokemons.append(pokemon)
-            print(graph.pokemons)
-        self.__init__(graph)
+            self.graph.pokemons.append(pokemon)
+        self.__init__(self.graph)
 
-    def agent_from_json(self, agents: str) -> dict():
-        graph = DiGraph()
-        agents = json.loads(agents)
-        arrAgents = agents["Agents"]
-        for a in arrAgents:
-            id = (a["Agent"]["id"])
-            value = (a["Agent"]["value"])
-            src = (a["Agent"]["src"])
-            dest = (a["Agent"]["dest"])
-            speed = (a["Agent"]["speed"])
+    def agent_from_json(self, agents: dict) -> dict():
+        # graph = DiGraph()
+        for a in agents['Agents']:
+            id = (a['Agent']["id"])
+            value = (a['Agent']["value"])
+            src = (a['Agent']["src"])
+            dest = (a['Agent']["dest"])
+            speed = (a['Agent']["speed"])
             try:
-                pos = (a["Agent"]["pos"])
+                out = (a['Agent']["pos"].split(','))
+                pos = (float(out[0]), float(out[1]), float(out[2]))
             except Exception:
                 pointX = random.randint(5, 50)
                 pointY = random.randint(5, 50)
                 pos = (pointX, pointY, 0.0)
             agent = Agent(id, value, src, dest, speed, pos)
-            graph.add_agent(agent)
-        self.__init__(graph)
+            self.graph.add_agent(agent)
+        self.__init__(self.graph)
 
     """
         Saves the graph in JSON format to a file

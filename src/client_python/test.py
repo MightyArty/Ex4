@@ -95,14 +95,11 @@ while client.is_running() == 'true':
     pokemons = json.loads(client.get_pokemons())
     algo.pokemons_from_json(pokemons)
 
-
-
-    # pokemons = json.loads(client.get_pokemons(),
-    #                       object_hook=lambda d: SimpleNamespace(**d)).Pokemons
-    # pokemons = [p.Pokemon for p in pokemons]
     pokemons = algo.graph.get_pokemons()
     for p in pokemons:
-        x, y, _ = p.pos.split(',')
+        x = p.pos[0]
+        y = p.pos[1]
+        # x, y, _ = p.pos.split(',')
         p.pos = SimpleNamespace(x=my_scale(
             float(x), x=True), y=my_scale(float(y), y=True))
     # agents = json.loads(client.get_agents(),
