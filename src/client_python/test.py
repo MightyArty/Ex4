@@ -33,7 +33,7 @@ client.start_connection(HOST, PORT)
 graph_json = client.get_graph()
 algo = GraphAlgo()
 
-algo.load_json(graph_json)
+algo.load_graph(client.get_graph())
 pokemons = client.get_pokemons()
 algo.pokemons_from_json(pokemons)
 
