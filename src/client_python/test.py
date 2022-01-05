@@ -174,9 +174,7 @@ while client.is_running() == 'true':
     for agent in algo.graph.agents.values():
         if agent.dest == -1:
             List = algo.sendAgent(agent)
-
             for v in List:
-
                 client.choose_next_edge('{"agent_id":' + str(agent.id) + ', "next_node_id":' + str(v) + '}')
         client.move()
 # game over:
