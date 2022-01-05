@@ -10,6 +10,7 @@ from client import Client
 from src.Graph.GraphAlgo import GraphAlgo
 from src.Graph.DiGraph import DiGraph
 from Pokemon import Pokemon
+
 # from src.client_python.student_code import scale
 
 WIDTH, HEIGHT = 1080, 720
@@ -62,7 +63,6 @@ def my_scale(data, x=False, y=False):
         return Scale(data, 50, screen.get_height() - 50, min_y, max_y)
 
 
-
 radius = 15
 
 client.add_agent("{\"id\":0}")
@@ -80,7 +80,6 @@ algo.agent_from_json(agOb)
 algo.pokemons_from_json(pokOb)
 print(algo.graph.get_agents())
 print(algo.graph.get_pokemons())
-
 
 while client.is_running() == 'true':
     pkOb = json.loads(client.get_pokemons())
@@ -153,14 +152,17 @@ while client.is_running() == 'true':
 
     # choose next edge for the agent
     # print(algo.graph.get_agents())
+    for pok in algo.graph.pokemons:
+        for agent in algo.graph.agents.values():
+            if agent.dest == -1:
+                findArr = algo.find_agent(pok)
+                for node in findArr[1]:
+                    print(node)
+                    client.choose_next_edge(
+                        '{"agent_id":' + str(findArr[0].id) + ', "next_node_id":' + str(node) + '}')
+                    client.move()
+            # ttl = client.time_to_end()
+            # print(ttl, client.get_info())
+            # print(algo.graph.pokemons)
 
-    for agent in algo.graph.agents.values():
-        if agent.dest == -1:
-            next_node = (agent.src - 1) % algo.get_graph().v_size()
-            client.choose_next_edge(
-                '{"agent_id":' + str(agent.id) + ', "next_node_id":' + str(next_node) + '}')
-        ttl = client.time_to_end()
-        print(ttl, client.get_info())
-        # print(algo.graph.pokemons)
 
-    client.move()

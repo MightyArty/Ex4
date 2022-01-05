@@ -200,12 +200,12 @@ class GraphAlgo(GraphAlgoInterface):
             index = id2
             # updating the cheaper route list
             while index != id1:
-                ansArr.append(vertexDirection[index].tag)
+                ansArr.append(vertexDirection[index].id)
                 index = vertexDirection[index].id
             ansArr.reverse()
-            return ansArr
+            return minWeight, ansArr
         except Exception:
-            return ansArr
+            return -1, ansArr
 
     """
         Finds the shortest path that visits all the nodes in the list
@@ -385,8 +385,10 @@ class GraphAlgo(GraphAlgoInterface):
     @:param agent, src of the pokemon
     @:return the best time and list of shortest path
     """
+
     def time_to_catch(self, agent: Agent, srcPok: int) -> float and list:
         path = self.shortest_path(agent.src, srcPok)
+        print(path)
         distance = path[0]
         arr = path[1]
         speed = agent.speed
@@ -397,6 +399,7 @@ class GraphAlgo(GraphAlgoInterface):
     @:param pokemon
     @:return edge
     """
+
     def find_pokemon(self, pokemon: Pokemon):
         for edge in self.graph.edgesMap.values():
             for runner in edge.values():
@@ -410,6 +413,7 @@ class GraphAlgo(GraphAlgoInterface):
     @:param pokemon
     @:return time and list of nodes to visit
     """
+
     def find_agent(self, pokemon: Pokemon):
         out = list
         arr = self.graph.agents
@@ -419,11 +423,9 @@ class GraphAlgo(GraphAlgoInterface):
         for agent in arr.values():
             time = self.time_to_catch(agent, edge.src)
             real_time = time[0]
-            out = time[1]
             if real_time < minimum:
                 minimum = real_time
                 temp = agent
+                out = time[1]
                 out.append(edge.dest)
         return temp, out
-
-
