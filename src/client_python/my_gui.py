@@ -159,8 +159,8 @@ while client.is_running() == 'true':
                 for node in findArr[1]:
                     client.choose_next_edge(
                         '{"agent_id":' + str(findArr[0].id) + ', "next_node_id":' + str(node) + '}')
-                    client.move()
+            client.move()
 
-    ttl = client.time_to_end()
-    #print(ttl, client.get_info())
-    print(algo.graph.pokemons)
+            ttl = client.time_to_end()
+            print(ttl, client.get_info())
+            # print(algo.graph.pokemons)
