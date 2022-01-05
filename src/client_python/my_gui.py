@@ -80,12 +80,19 @@ algo.agent_from_json(agOb)
 algo.pokemons_from_json(pokOb)
 print(algo.graph.get_agents())
 print(algo.graph.get_pokemons())
-
+val = algo.graph.agents[0].value
 while client.is_running() == 'true':
     pkOb = json.loads(client.get_pokemons())
     agOb = json.loads(client.get_agents())
     algo.agent_from_json(agOb)
-    algo.pokemons_from_json(pkOb)
+    valcurr = algo.graph.agents[0].value
+    #  print(valcurr, val)
+   #print(algo.graph.pokemons)
+    if val != valcurr:
+        val = valcurr
+        algo.graph.pokemons.pop()
+        algo.pokemons_from_json(pkOb)
+    # algo.pokemons_from_json(pkOb)
     # print(algo.graph.get_agents())
     # print(algo.graph.get_pokemons())
 
@@ -156,11 +163,12 @@ while client.is_running() == 'true':
         for agent in algo.graph.agents.values():
             if agent.dest == -1:
                 findArr = algo.find_agent(pok)
-                for node in findArr[1]:
+                print(findArr[1])
+                for next_node in findArr[1]:
                     client.choose_next_edge(
-                        '{"agent_id":' + str(findArr[0].id) + ', "next_node_id":' + str(node) + '}')
-            client.move()
+                        '{"agent_id":' + str(findArr[0].id) + ', "next_node_id":' + str(next_node) + '}')
+    client.move()
 
-            ttl = client.time_to_end()
-            print(ttl, client.get_info())
-            # print(algo.graph.pokemons)
+    ttl = client.time_to_end()
+    # print(ttl, client.get_info())
+   # print(algo.graph.pokemons)

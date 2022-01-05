@@ -202,7 +202,7 @@ class GraphAlgo(GraphAlgoInterface):
             while index != id1:
                 ansArr.append(vertexDirection[index].id)
                 index = vertexDirection[index].id
-            ansArr.pop()
+           # ansArr.pop()
             ansArr.reverse()
             return minWeight, ansArr
         except Exception:
@@ -420,6 +420,7 @@ class GraphAlgo(GraphAlgoInterface):
         minimum = float('inf')
         temp = None
         edge = self.find_pokemon(pokemon)
+        print(edge)
         for agent in arr.values():
             time = self.time_to_catch(agent, edge.src)
             real_time = time[0]
