@@ -34,28 +34,28 @@ graph_json = client.get_graph()
 algo = GraphAlgo()
 object = json.loads(client.get_graph())
 algo.load_graph(object)
-print(algo.graph)
+# print(algo.graph)
 pokemons = json.loads(client.get_pokemons())
-print(pokemons)
+# print(pokemons)
 algo.pokemons_from_json(pokemons)
 
 # load the json string into SimpleNamespace Object
 
-# graph = json.loads(
-#     graph_json, object_hook=lambda json_dict: SimpleNamespace(**json_dict))
+# graph = json.loads(graph_json, object_hook=lambda json_dict: SimpleNamespace(**json_dict))
 
-for n in algo.graph.nodesMap.values():
+
+for n in algo.graph.nodesMap:
     x, y, _ = n.pos.split(',')
     n.pos = SimpleNamespace(x=float(x), y=float(y))
 
 
 #get data proportions
-min_x = min((algo.graph.nodesMap.values()), key=lambda n: n.pos[0]).pos[0]
+min_x = min(x.pos[0])
 min_y = min(list(algo.graph.nodesMap.values()), key=lambda n: n.pos[1]).pos[1]
 max_x = max(list(algo.graph.nodesMap.values()), key=lambda n: n.pos[0]).pos[0]
 max_y = max(list(algo.graph.nodesMap.values()), key=lambda n: n.pos[1]).pos[1]
 
-
+print(algo.graph.nodesMap)
 def scale(data, min_screen, max_screen, min_data, max_data):
     """
     get the scaled data with proportions min_data, max_data
