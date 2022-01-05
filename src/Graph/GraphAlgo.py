@@ -427,7 +427,7 @@ class GraphAlgo(GraphAlgoInterface):
         minimum = float('inf')
         temp = None
         edge = self.find_pokemon_edge(pokemon)
-        print(edge)
+        # print(edge)
         for agent in arr.values():
             if agent.src == edge.dest:
                 time = self.time_to_catch(agent.speed, edge.src, edge.dest)
