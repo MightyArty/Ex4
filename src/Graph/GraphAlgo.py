@@ -202,6 +202,7 @@ class GraphAlgo(GraphAlgoInterface):
             while index != id1:
                 ansArr.append(vertexDirection[index].id)
                 index = vertexDirection[index].id
+            ansArr.pop()
             ansArr.reverse()
             return minWeight, ansArr
         except Exception:
@@ -388,7 +389,6 @@ class GraphAlgo(GraphAlgoInterface):
 
     def time_to_catch(self, agent: Agent, srcPok: int) -> float and list:
         path = self.shortest_path(agent.src, srcPok)
-        print(path)
         distance = path[0]
         arr = path[1]
         speed = agent.speed
