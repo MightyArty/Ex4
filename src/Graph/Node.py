@@ -11,6 +11,9 @@ class Node:
     def get_tag(self):
         return self.tag
 
+    def get_pos(self):
+        return self.pos
+
     def __str__(self):
         return str(self.id)
 
