@@ -39,21 +39,21 @@ pokemons = json.loads(client.get_pokemons())
 print(pokemons)
 algo.pokemons_from_json(pokemons)
 
+
 # load the json string into SimpleNamespace Object
 
 # graph = json.loads(
 #     graph_json, object_hook=lambda json_dict: SimpleNamespace(**json_dict))
 
-for n in algo.graph.nodesMap.values():
+for n in algo.graph.nodesMap:
     x, y, _ = n.pos.split(',')
     n.pos = SimpleNamespace(x=float(x), y=float(y))
 
-
-#get data proportions
-min_x = min((algo.graph.nodesMap.values()), key=lambda n: n.pos[0]).pos[0]
-min_y = min(list(algo.graph.nodesMap.values()), key=lambda n: n.pos[1]).pos[1]
-max_x = max(list(algo.graph.nodesMap.values()), key=lambda n: n.pos[0]).pos[0]
-max_y = max(list(algo.graph.nodesMap.values()), key=lambda n: n.pos[1]).pos[1]
+# get data proportions
+# min_x = min(list(algo.graph.nodesMap.values()), key=lambda n: n.pos.x).pos.x
+# min_y = min(list(algo.graph.nodesMap.values()), key=lambda n: n.pos[1]).pos[1]
+# max_x = max(list(algo.graph.nodesMap.values()), key=lambda n: n.pos[0]).pos[0]
+# max_y = max(list(algo.graph.nodesMap.values()), key=lambda n: n.pos[1]).pos[1]
 
 
 def scale(data, min_screen, max_screen, min_data, max_data):
@@ -95,16 +95,11 @@ while client.is_running() == 'true':
     pokemons = json.loads(client.get_pokemons())
     algo.pokemons_from_json(pokemons)
 
-    # pokemons = json.loads(client.get_pokemons(),
-    #                       object_hook=lambda d: SimpleNamespace(**d)).Pokemons
-    # pokemons = [p.Pokemon for p in pokemons]
-    pokem = algo.graph.pokemons
-    print(algo.graph.pokemons)
-    for p in pokem:
-        #  print(type(p))
+    pokemons = algo.graph.get_pokemons()
+    for p in pokemons:
         x = p.pos[0]
         y = p.pos[1]
-
+        # x, y, _ = p.pos.split(',')
         p.pos = SimpleNamespace(x=my_scale(
             float(x), x=True), y=my_scale(float(y), y=True))
     # agents = json.loads(client.get_agents(),
