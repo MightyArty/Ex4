@@ -17,4 +17,4 @@ class Edge:
         return f"Edge(source: {self.src}, destination: {self.dest}, weight: {self.weight}"
 
     def __repr__(self):
-        return f"Edge(source: {self.src}, destination: {self.dest}, weight: {self.weight}"
+        return f"Edge(source: {self.src}, destination: {self.dest}, weight: {self.weight})"

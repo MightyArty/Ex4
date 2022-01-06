@@ -10,6 +10,7 @@ from client import Client
 from src.Graph.GraphAlgo import GraphAlgo
 from src.Graph.DiGraph import DiGraph
 from Pokemon import Pokemon
+
 # from src.client_python.student_code import scale
 
 WIDTH, HEIGHT = 1080, 720
@@ -62,34 +63,44 @@ def my_scale(data, x=False, y=False):
         return Scale(data, 50, screen.get_height() - 50, min_y, max_y)
 
 
-
 radius = 15
 
-client.add_agent("{\"id\":0}")
-client.add_agent("{\"id\":1}")
-client.add_agent("{\"id\":2}")
-client.add_agent("{\"id\":3}")
+pkOb = json.loads(client.get_pokemons())
+algo.pokemons_from_json(pkOb)
 
-# this command starts the server - the game is running now
-client.start()
+# good_pos = 0
+# for pok in algo.graph.pokemons:
+#     edge = algo.find_pokemon_edge(pok)
+#     good_pos = edge.src
+
+# client.add_agent("{\"id\":" + str(good_pos) + "}")
+
+
+# client.add_agent("{\"id\":" + str(start_pos) + "}")
+amount_of_agents = int(json.loads(client.get_info())["GameServer"]["agents"])
+for ag in range(amount_of_agents):
+    client.add_agent("{\"id\":" + str(ag) + "}")
 
 pokOb = json.loads(client.get_pokemons())
 agOb = json.loads(client.get_agents())
 
 algo.agent_from_json(agOb)
 algo.pokemons_from_json(pokOb)
-print(algo.graph.get_agents())
-print(algo.graph.get_pokemons())
+# print(algo.graph.get_agents())
+# print(algo.graph.get_pokemons())
 
-print('-------------A-D-L-----------------')
-
+client.start()
+sizeOfPokemons = len(algo.graph.pokemons)
 while client.is_running() == 'true':
-    pkOb = json.loads(client.get_pokemons())
     agOb = json.loads(client.get_agents())
     algo.agent_from_json(agOb)
-    algo.pokemons_from_json(pkOb)
-    print(algo.graph.get_agents())
-    print(algo.graph.get_pokemons())
+    if len(algo.graph.pokemons) != sizeOfPokemons:
+        pkOb = json.loads(client.get_pokemons())
+        algo.pokemons_from_json(pkOb)
+        print(algo.graph.pokemons)
+
+    # print(algo.graph.get_agents())
+    # print(algo.graph.get_pokemons())
 
     # check events
     for event in pygame.event.get():
@@ -98,7 +109,7 @@ while client.is_running() == 'true':
             exit(0)
 
     # refresh surface
-    screen.fill(Color(0, 0, 0))
+    screen.fill(pygame.Color(0, 0, 0))
 
     # draw nodes
     for node in algo.get_graph().get_all_v().values():
@@ -141,24 +152,35 @@ while client.is_running() == 'true':
         pygame.draw.circle(screen, Color(122, 61, 23),
                            (int(x), int(y)), 10)
     # draw pokemons
-    # for pok in algo.graph.pokemons:
-    #     x_, y_, z_ = pok.
+    for pok in algo.graph.pokemons:
+        x_, y_, z_ = pok.get_pos()
+        x = my_scale(x_, x=True)
+        y = my_scale(y_, y=True)
+        pygame.draw.circle(screen, Color(0, 255, 255),
+                           (int(x), int(y)), 10)
 
     display.update()
 
     clock.tick(60)
 
     # choose next edge for the agent
-    print(algo.graph.get_agents())
+    # print(algo.graph.get_agents())
+    for pok in algo.graph.pokemons:
+        findArr = algo.find_agent(pok)
+        Agent = findArr[0]
+        edge = findArr[2]
+        if Agent.dest == -1:
+            # print(findArr[1])
+            for next_node in findArr[1]:
+                client.choose_next_edge(
+                    '{"agent_id":' + str(findArr[0].id) + ', "next_node_id":' + str(next_node) + '}')
+        elif (Agent.src == edge.src and Agent.dest == edge.dest) or (Agent.src == edge.dest and Agent.dest == edge.src):
+            algo.graph.pokemons.remove(pok)
 
-    for agent in algo.graph.agents.values():
-        print(type(agent.dest))
-        if agent.dest == -1:
-            next_node = (agent.src - 1) % algo.get_graph().v_size()
-            client.choose_next_edge(
-                '{"agent_id":' + str(agent.id) + ', "next_node_id":' + str(next_node) + '}')
-        ttl = client.time_to_end()
-        print(ttl, client.get_info())
-        print(algo.graph.pokemons)
+            # print(algo.graph.pokemons)
 
     client.move()
+
+    # ttl = client.time_to_end()
+    # print(ttl, client.get_info())
+    # print(algo.graph.pokemons)
