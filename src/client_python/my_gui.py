@@ -88,7 +88,6 @@ while client.is_running() == 'true':
     # pkOb = json.loads(client.get_pokemons())
     agOb = json.loads(client.get_agents())
     algo.agent_from_json(agOb)
-    #  print(valcurr, val)
    #print(algo.graph.pokemons)
     for a in algo.graph.agents.values():
         for p in algo.graph.pokemons:
@@ -172,14 +171,12 @@ while client.is_running() == 'true':
     # choose next edge for the agent
     # print(algo.graph.get_agents())
     for pok in algo.graph.pokemons:
-        for agent in algo.graph.agents.values():
-            if agent.dest == -1:
-
-                findArr = algo.find_agent(pok)
-                # print(findArr[1])
-                for next_node in findArr[1]:
-                    client.choose_next_edge(
-                        '{"agent_id":' + str(findArr[0].id) + ', "next_node_id":' + str(next_node) + '}')
+        # for agent in algo.graph.agents.values():
+        if agent.dest == -1:
+            findArr = algo.find_agent(pok)
+            for next_node in findArr[1]:
+                client.choose_next_edge(
+                    '{"agent_id":' + str(findArr[0].id) + ', "next_node_id":' + str(next_node) + '}')
 
     client.move()
 
