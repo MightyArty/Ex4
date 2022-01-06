@@ -97,7 +97,8 @@ while client.is_running() == 'true':
     if len(algo.graph.pokemons) != sizeOfPokemons:
         pkOb = json.loads(client.get_pokemons())
         algo.pokemons_from_json(pkOb)
-        print(algo.graph.pokemons)
+
+
 
     # print(algo.graph.get_agents())
     # print(algo.graph.get_pokemons())
@@ -161,26 +162,33 @@ while client.is_running() == 'true':
 
     display.update()
 
-    clock.tick(60)
+    clock.tick(10)
 
     # choose next edge for the agent
     # print(algo.graph.get_agents())
     for pok in algo.graph.pokemons:
         findArr = algo.find_agent(pok)
         Agent = findArr[0]
+        tempDest = Agent.dest
         edge = findArr[2]
         if Agent.dest == -1:
             # print(findArr[1])
             for next_node in findArr[1]:
+
                 client.choose_next_edge(
                     '{"agent_id":' + str(findArr[0].id) + ', "next_node_id":' + str(next_node) + '}')
-        elif (Agent.src == edge.src and Agent.dest == edge.dest) or (Agent.src == edge.dest and Agent.dest == edge.src):
+
+        elif Agent.src == edge.src and Agent.dest == edge.dest:
             algo.graph.pokemons.remove(pok)
+            # print(algo.graph.agents)
+    client.move()
+
+
 
             # print(algo.graph.pokemons)
 
-    client.move()
 
-    # ttl = client.time_to_end()
-    # print(ttl, client.get_info())
+
+    ttl = client.time_to_end()
+    print(ttl, client.get_info())
     # print(algo.graph.pokemons)
