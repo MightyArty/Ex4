@@ -76,7 +76,6 @@ algo.pokemons_from_json(pkOb)
 # client.add_agent("{\"id\":" + str(good_pos) + "}")
 
 
-
 # client.add_agent("{\"id\":" + str(start_pos) + "}")
 amount_of_agents = int(json.loads(client.get_info())["GameServer"]["agents"])
 for ag in range(amount_of_agents):
@@ -91,12 +90,14 @@ algo.pokemons_from_json(pokOb)
 # print(algo.graph.get_pokemons())
 
 client.start()
-
+sizeOfPokemons = len(algo.graph.pokemons)
 while client.is_running() == 'true':
     agOb = json.loads(client.get_agents())
     algo.agent_from_json(agOb)
-    pkOb = json.loads(client.get_pokemons())
-    algo.pokemons_from_json(pkOb)
+    if len(algo.graph.pokemons) != sizeOfPokemons:
+        pkOb = json.loads(client.get_pokemons())
+        algo.pokemons_from_json(pkOb)
+        print(algo.graph.pokemons)
 
     # print(algo.graph.get_agents())
     # print(algo.graph.get_pokemons())
@@ -173,8 +174,10 @@ while client.is_running() == 'true':
             for next_node in findArr[1]:
                 client.choose_next_edge(
                     '{"agent_id":' + str(findArr[0].id) + ', "next_node_id":' + str(next_node) + '}')
-        elif (Agent.src == edge.src and Agent.dest == edge.dest) or (Agent.src == edge.dest and Agent.dest == edge.src) :
+        elif (Agent.src == edge.src and Agent.dest == edge.dest) or (Agent.src == edge.dest and Agent.dest == edge.src):
             algo.graph.pokemons.remove(pok)
+
+            # print(algo.graph.pokemons)
 
     client.move()
 

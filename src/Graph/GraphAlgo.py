@@ -81,6 +81,7 @@ class GraphAlgo(GraphAlgoInterface):
 
     def pokemons_from_json(self, pokemons: dict) -> list:
         # graph = DiGraph()
+        self.graph.pokemons.clear()
         for p in pokemons['Pokemons']:
             value = (p['Pokemon']["value"])
 
