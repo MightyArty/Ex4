@@ -434,7 +434,7 @@ class GraphAlgo(GraphAlgoInterface):
                 time = self.time_to_catch(agent.speed, edge.src, edge.dest)
             else:
                 time = self.time_to_catch(agent.speed, agent.src, edge.dest)
-            real_time = time[0]+pokemon.value
+            real_time = time[0]
             if real_time < minimum:
                 minimum = real_time
                 temp = agent
