@@ -10,8 +10,8 @@ from matplotlib.patches import ConnectionPatch
 from src.Graph.GraphAlgoInterface import GraphAlgoInterface
 from src.Graph.DiGraph import DiGraph
 from src.Graph.GraphInterface import GraphInterface
-from src.client_python.Pokemon import Pokemon
-from src.client_python.Agent import Agent
+from src.PokemonGame.Pokemon import Pokemon
+from src.PokemonGame.Agent import Agent
 
 
 class GraphAlgo(GraphAlgoInterface):
@@ -79,7 +79,7 @@ class GraphAlgo(GraphAlgoInterface):
             graph.add_edge(edge["src"], edge["dest"], edge["w"])
         self.graph = graph
 
-    def pokemons_from_json(self, pokemons: dict) -> list:
+    def pokemon_to_json(self, pokemons: dict) -> list:
         # graph = DiGraph()
         self.graph.pokemons.clear()
         for p in pokemons['Pokemons']:
@@ -88,16 +88,11 @@ class GraphAlgo(GraphAlgoInterface):
             type = (p['Pokemon']["type"])
             out = p['Pokemon']["pos"].split(',')
             pos = (float(out[0]), float(out[1]), float(out[2]))
-
-            # except Exception:
-            #     pointX = random.randint(5, 50)
-            #     pointY = random.randint(5, 50)
-            #     pos = (pointX, pointY, 0.0)
             pokemon = Pokemon(value, type, pos)
             self.graph.pokemons.append(pokemon)
         self.__init__(self.graph)
 
-    def agent_from_json(self, agents: dict) -> dict():
+    def agent_to_json(self, agents: dict) -> dict():
         # graph = DiGraph()
         for a in agents['Agents']:
             id = (a['Agent']["id"])
