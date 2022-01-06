@@ -17,7 +17,6 @@ HOST = "127.0.0.1"
 radius = 15
 
 # Images for the GUI (independent way)
-
 agent_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "agent.png"))
 pokemon_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "pokemon1.png"))
 pokemon_2_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "pokemon2.png"))
