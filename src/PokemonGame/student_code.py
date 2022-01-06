@@ -1,13 +1,11 @@
 import sys
-from types import SimpleNamespace
 from client import Client
-import json
 from pygame import gfxdraw
 import pygame
 import math
 from Button import Button
 import json
-
+import os
 from src.Graph.GraphAlgo import GraphAlgo
 
 WIDTH, HEIGHT = 1080, 720
@@ -18,11 +16,14 @@ HOST = "127.0.0.1"
 
 radius = 15
 
-# Images for the GUI
-agent_img = pygame.image.load("../../../../Downloads/testP/assets/agent.png")
-pokemon_img = pygame.image.load("../../../../Downloads/testP/assets/pokemon1.png")
-pokemon_2_img = pygame.image.load("../../../../Downloads/testP/assets/pokemon2.png")
-quit_img = pygame.image.load("../../../../Downloads/testP/assets/quit.png")
+# Images for the GUI (independent way)
+
+agent_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "agent.png"))
+pokemon_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "pokemon1.png"))
+pokemon_2_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "pokemon2.png"))
+quit_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "quit.png"))
+background_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "background1.webp"))
+
 
 quit_button = Button(0, 0, quit_img)
 
@@ -220,7 +221,6 @@ while client.is_running() == "true":
     if len(algo.graph.pokemons) != sizeOfPokemons:
         pkOb = json.loads(client.get_pokemons())
         algo.pokemon_to_json(pkOb)
-        print(algo.graph.pokemons)
     # check events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -229,6 +229,9 @@ while client.is_running() == "true":
 
     # refresh surface
     screen.fill(pygame.Color(0, 0, 0))
+    top = screen.get_height() -HEIGHT
+    corner = screen.get_width() -WIDTH
+    screen.blit(background_img, (top, corner))
 
     # draw nodes
     for node in algo.get_graph().get_all_v().values():
@@ -244,37 +247,36 @@ while client.is_running() == "true":
         rect = id_srf.get_rect(center=(x, y))
         screen.blit(id_srf, rect)
 
-    # draw edges
-    for e in algo.get_graph().all_out_edges_of_node(node.id).keys():
-        src = node.id
-        dest = e
-        isForward = dest > src
-        color = pygame.Color(239, 71, 111) if isForward else pygame.Color(6, 214, 160)
-
-        # find the edge nodes
+        # draw edges
+        for e in algo.get_graph().all_out_edges_of_node(node.id).keys():
+            src = node.id
+            dest = e
+            isForward = dest > src
+            color = pygame.Color(239, 71, 111) if isForward else pygame.Color(6, 214, 160)
 
 
-        # scaled positions
-        src_x, src_y, src_z = algo.graph.get_all_v()[src].get_pos()
-        dest_x, dest_y, dest_z = algo.graph.get_all_v()[dest].get_pos()
-        sx = my_scale(src_x, x=True)
-        sy = my_scale(src_y, y=True)
-        dx = my_scale(dest_x, x=True)
-        dy = my_scale(dest_y, y=True)
 
-        draw_arrow(
-            screen, color, (sx, sy), (dx, dy), isForward,
-        )
+
+            # scaled positions
+            src_x, src_y, src_z = algo.graph.get_all_v()[src].get_pos()
+            dest_x, dest_y, dest_z = algo.graph.get_all_v()[dest].get_pos()
+            sx = my_scale(src_x, x=True)
+            sy = my_scale(src_y, y=True)
+            dx = my_scale(dest_x, x=True)
+            dy = my_scale(dest_y, y=True)
+
+            draw_arrow(
+                screen, color, (sx, sy), (dx, dy), isForward,
+            )
 
     # draw agents
     for agent in algo.graph.agents.values():
         x_, y_, z_ = agent.get_pos()
         x = my_scale(x_, x=True)
         y = my_scale(y_, y=True)
-        pygame.draw.circle(screen, pygame.Color(122, 61, 23),
-                           (int(x), int(y)), 10)
+        draw_agent(screen, x, y, agent.id)
 
-    # draw pokemons (note: should differ (GUI wise) between the up and the down pokemons (currently they are marked in the same way).
+    # draw Pokemon's
     for p in algo.graph.pokemons:
         x_, y_, z_ = p.get_pos()
         x = my_scale(x_, x=True)
@@ -311,7 +313,7 @@ while client.is_running() == "true":
     pygame.display.update()
 
     # refresh rate
-    clock.tick(60)
+    clock.tick(10)
 
     # choose next edge
     for pok in algo.graph.pokemons:
@@ -319,14 +321,11 @@ while client.is_running() == "true":
         Agent = findArr[0]
         edge = findArr[2]
         if Agent.dest == -1:
-            # print(findArr[1])
             for next_node in findArr[1]:
                 client.choose_next_edge(
                     '{"agent_id":' + str(findArr[0].id) + ', "next_node_id":' + str(next_node) + '}')
         elif (Agent.src == edge.src and Agent.dest == edge.dest) or (Agent.src == edge.dest and Agent.dest == edge.src):
             algo.graph.pokemons.remove(pok)
-
-            # print(algo.graph.pokemons)
 
     client.move()
 # game over:
