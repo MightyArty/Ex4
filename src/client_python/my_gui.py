@@ -89,21 +89,20 @@ while client.is_running() == 'true':
     agOb = json.loads(client.get_agents())
     algo.agent_from_json(agOb)
     #  print(valcurr, val)
-   #print(algo.graph.pokemons)
-    for a in algo.graph.agents.values():
-        for p in algo.graph.pokemons:
-            edge = algo.find_pokemon_edge(p)
-            if a.src == edge.src:
-                pkOb = json.loads(client.get_pokemons())
-                algo.pokemons_from_json(pkOb)
-                algo.graph.pokemons.remove(p)
-                break
+    # print(algo.graph.pokemons)
+    # for a in algo.graph.agents.values():
+    #     for p in algo.graph.pokemons:
+    #         edge = algo.find_pokemon_edge(p)
+    #         if a.src == edge.src and a.dest == edge.dest:
+    pkOb = json.loads(client.get_pokemons())
+    algo.pokemons_from_json(pkOb)
+                # algo.graph.pokemons.remove(p)
+                # break
             # if a.dest == edge.dest:
             #     pkOb = json.loads(client.get_pokemons())
             #     algo.pokemons_from_json(pkOb)
             #     algo.graph.pokemons.remove(p)
             #     break
-
 
     # print(algo.graph.get_agents())
     # print(algo.graph.get_pokemons())
@@ -172,18 +171,19 @@ while client.is_running() == 'true':
     # choose next edge for the agent
     # print(algo.graph.get_agents())
     for pok in algo.graph.pokemons:
-        for agent in algo.graph.agents.values():
-            if agent.dest == -1:
-
-                findArr = algo.find_agent(pok)
-                # print(findArr[1])
-                for next_node in findArr[1]:
-                    client.choose_next_edge(
-                        '{"agent_id":' + str(findArr[0].id) + ', "next_node_id":' + str(next_node) + '}')
+        findArr = algo.find_agent(pok)
+        Agent = findArr[0]
+        edge = findArr[2]
+        if Agent.dest == -1:
+            # print(findArr[1])
+            for next_node in findArr[1]:
+                client.choose_next_edge(
+                    '{"agent_id":' + str(findArr[0].id) + ', "next_node_id":' + str(next_node) + '}')
+        elif Agent.src == edge.src and Agent.dest == edge.dest:
+            algo.graph.pokemons.remove(pok)
 
     client.move()
 
-    ttl = client.time_to_end()
+    # ttl = client.time_to_end()
     # print(ttl, client.get_info())
-    # print(algo.graph.pokemons)
-    print(algo.graph.agents)
+    print(algo.graph.pokemons)
