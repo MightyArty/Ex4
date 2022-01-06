@@ -11,7 +11,7 @@ from src.Graph.GraphAlgo import GraphAlgo
 from src.Graph.DiGraph import DiGraph
 from Pokemon import Pokemon
 
-# from src.PokemonGame.student_code import scale
+# from src.client_python.student_code import scale
 
 WIDTH, HEIGHT = 1080, 720
 PORT = 6666
@@ -66,7 +66,7 @@ def my_scale(data, x=False, y=False):
 radius = 15
 
 pkOb = json.loads(client.get_pokemons())
-algo.pokemon_to_json(pkOb)
+algo.pokemons_from_json(pkOb)
 
 # good_pos = 0
 # for pok in algo.graph.pokemons:
@@ -84,8 +84,8 @@ for ag in range(amount_of_agents):
 pokOb = json.loads(client.get_pokemons())
 agOb = json.loads(client.get_agents())
 
-algo.agent_to_json(agOb)
-algo.pokemon_to_json(pokOb)
+algo.agent_from_json(agOb)
+algo.pokemons_from_json(pokOb)
 # print(algo.graph.get_agents())
 # print(algo.graph.get_pokemons())
 
@@ -93,10 +93,10 @@ client.start()
 sizeOfPokemons = len(algo.graph.pokemons)
 while client.is_running() == 'true':
     agOb = json.loads(client.get_agents())
-    algo.agent_to_json(agOb)
+    algo.agent_from_json(agOb)
     if len(algo.graph.pokemons) != sizeOfPokemons:
         pkOb = json.loads(client.get_pokemons())
-        algo.pokemon_to_json(pkOb)
+        algo.pokemons_from_json(pkOb)
         print(algo.graph.pokemons)
 
     # print(algo.graph.get_agents())
