@@ -246,7 +246,7 @@ while client.is_running() == "true":
 
         # draw edges
         for e in algo.get_graph().all_out_edges_of_node(node.id).keys():
-            print(e)
+            # print(e)
             src = node.id
             dest = e
             isForward = dest > src
@@ -270,12 +270,11 @@ while client.is_running() == "true":
     # draw agents
     for agent in algo.graph.agents.values():
         x_, y_, z_ = agent.get_pos()
-        x = my_scale(x_, x=True)
-        y = my_scale(y_, y=True)
-        pygame.draw.circle(screen, pygame.Color(122, 61, 23),
-                           (int(x), int(y)), 10)
+    x = my_scale(x_, x=True)
+    y = my_scale(y_, y=True)
+    draw_agent(screen, x, y, agent.id)
 
-    # draw pokemons (note: should differ (GUI wise) between the up and the down pokemons (currently they are marked in the same way).
+    # draw Pokemon's (note: should differ (GUI wise) between the up and the down pokemons (currently they are marked in the same way).
     for p in algo.graph.pokemons:
         x_, y_, z_ = p.get_pos()
         x = my_scale(x_, x=True)
@@ -312,7 +311,7 @@ while client.is_running() == "true":
     pygame.display.update()
 
     # refresh rate
-    clock.tick(60)
+    clock.tick(10)
 
     # choose next edge
     for pok in algo.graph.pokemons:
