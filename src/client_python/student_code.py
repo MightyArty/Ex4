@@ -19,10 +19,10 @@ HOST = "127.0.0.1"
 radius = 15
 
 # Images for the GUI
-agent_img = pygame.image.load("../../../../Downloads/testP/assets/agent.png")
-pokemon_img = pygame.image.load("../../../../Downloads/testP/assets/pokemon1.png")
-pokemon_2_img = pygame.image.load("../../../../Downloads/testP/assets/pokemon2.png")
-quit_img = pygame.image.load("../../../../Downloads/testP/assets/quit.png")
+agent_img = pygame.image.load("/Users/david/Desktop/Ex4/assets/agent.png")
+pokemon_img = pygame.image.load("/Users/david/Desktop/Ex4/assets/pokemon1.png")
+pokemon_2_img = pygame.image.load("/Users/david/Desktop/Ex4/assets/pokemon2.png")
+quit_img = pygame.image.load("/Users/david/Desktop/Ex4/assets/quit.png")
 
 quit_button = Button(0, 0, quit_img)
 
