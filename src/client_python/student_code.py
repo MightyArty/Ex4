@@ -7,7 +7,7 @@ import pygame
 import math
 from Button import Button
 import json
-
+import os
 from src.Graph.GraphAlgo import GraphAlgo
 
 WIDTH, HEIGHT = 1080, 720
@@ -18,11 +18,13 @@ HOST = "127.0.0.1"
 
 radius = 15
 
-# Images for the GUI
-agent_img = pygame.image.load("/Users/david/Desktop/Ex4/assets/agent.png")
-pokemon_img = pygame.image.load("/Users/david/Desktop/Ex4/assets/pokemon1.png")
-pokemon_2_img = pygame.image.load("/Users/david/Desktop/Ex4/assets/pokemon2.png")
-quit_img = pygame.image.load("/Users/david/Desktop/Ex4/assets/quit.png")
+# Images for the GUI (independent way)
+
+agent_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "agent.png"))
+pokemon_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "pokemon1.png"))
+pokemon_2_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "pokemon2.png"))
+quit_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "quit.png"))
+
 
 quit_button = Button(0, 0, quit_img)
 
