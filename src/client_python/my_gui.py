@@ -65,7 +65,12 @@ def my_scale(data, x=False, y=False):
 
 radius = 15
 
-client.add_agent("{\"id\":0}")
+good_pos = 0
+for pok in algo.graph.pokemons:
+    edge = algo.find_pokemon_edge(pok)
+    good_pos = edge.src
+num = str(good_pos)
+client.add_agent("{\"id\":10}")
 client.add_agent("{\"id\":1}")
 client.add_agent("{\"id\":2}")
 client.add_agent("{\"id\":3}")
@@ -179,11 +184,11 @@ while client.is_running() == 'true':
             for next_node in findArr[1]:
                 client.choose_next_edge(
                     '{"agent_id":' + str(findArr[0].id) + ', "next_node_id":' + str(next_node) + '}')
-        elif Agent.src == edge.src and Agent.dest == edge.dest:
+        elif (Agent.src == edge.src and Agent.dest == edge.dest) or (Agent.src == edge.dest and Agent.dest == edge.src):
             algo.graph.pokemons.remove(pok)
 
     client.move()
 
     # ttl = client.time_to_end()
     # print(ttl, client.get_info())
-    print(algo.graph.pokemons)
+    # print(algo.graph.pokemons)
