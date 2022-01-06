@@ -8,7 +8,7 @@
 
 **This is a Pokemon game, which is played on a directed weighted graph**
 
-# Game conscept :
+# Game concept :
 In this game we (the agent) need to catch as much pokemons as we can in short amount of time. As much as better :)
 
 The pokemons are spread all over the graph edges, and the agents looking for them untill the game is running.
