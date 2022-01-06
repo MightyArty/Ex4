@@ -56,3 +56,4 @@ def allocateAgents():
 
 
 while client.is_running() == 'true':
+    pass
