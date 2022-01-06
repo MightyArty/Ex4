@@ -272,9 +272,9 @@ while client.is_running() == "true":
     # draw agents
     for agent in algo.graph.agents.values():
         x_, y_, z_ = agent.get_pos()
-    x = my_scale(x_, x=True)
-    y = my_scale(y_, y=True)
-    draw_agent(screen, x, y, agent.id)
+        x = my_scale(x_, x=True)
+        y = my_scale(y_, y=True)
+        draw_agent(screen, x, y, agent.id)
 
     # draw Pokemon's (note: should differ (GUI wise) between the up and the down pokemons (currently they are marked in the same way).
     for p in algo.graph.pokemons:
