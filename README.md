@@ -60,4 +60,6 @@ The pokemons are spread all over the graph edges, and the agents looking for the
 </br>`Client` - all the game info (port,ip...) and dealing with the actual connetion to the server of the game
 </br>`Game` - the actual implementation of all the classes together to perfectly working algorithm of the Pokemon Game 
 
-**For GUI we used py_game**
+# GUI - using pygame:
+
+
