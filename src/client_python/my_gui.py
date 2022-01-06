@@ -65,49 +65,38 @@ def my_scale(data, x=False, y=False):
 
 radius = 15
 
-good_pos = 0
-for pok in algo.graph.pokemons:
-    edge = algo.find_pokemon_edge(pok)
-    good_pos = edge.src
-num = str(good_pos)
-client.add_agent("{\"id\":10}")
-client.add_agent("{\"id\":1}")
-client.add_agent("{\"id\":2}")
-client.add_agent("{\"id\":3}")
+pkOb = json.loads(client.get_pokemons())
+algo.pokemons_from_json(pkOb)
 
-# this command starts the server - the game is running now
-client.start()
+# good_pos = 0
+# for pok in algo.graph.pokemons:
+#     edge = algo.find_pokemon_edge(pok)
+#     good_pos = edge.src
+
+# client.add_agent("{\"id\":" + str(good_pos) + "}")
+
+
+
+# client.add_agent("{\"id\":" + str(start_pos) + "}")
+amount_of_agents = int(json.loads(client.get_info())["GameServer"]["agents"])
+for ag in range(amount_of_agents):
+    client.add_agent("{\"id\":" + str(ag) + "}")
 
 pokOb = json.loads(client.get_pokemons())
 agOb = json.loads(client.get_agents())
 
 algo.agent_from_json(agOb)
 algo.pokemons_from_json(pokOb)
-print(algo.graph.get_agents())
-print(algo.graph.get_pokemons())
-val = algo.graph.agents[0].value
+# print(algo.graph.get_agents())
+# print(algo.graph.get_pokemons())
 
-epsilon = 0.0000000001
+client.start()
 
 while client.is_running() == 'true':
-    # pkOb = json.loads(client.get_pokemons())
     agOb = json.loads(client.get_agents())
     algo.agent_from_json(agOb)
-    #  print(valcurr, val)
-    # print(algo.graph.pokemons)
-    # for a in algo.graph.agents.values():
-    #     for p in algo.graph.pokemons:
-    #         edge = algo.find_pokemon_edge(p)
-    #         if a.src == edge.src and a.dest == edge.dest:
     pkOb = json.loads(client.get_pokemons())
     algo.pokemons_from_json(pkOb)
-                # algo.graph.pokemons.remove(p)
-                # break
-            # if a.dest == edge.dest:
-            #     pkOb = json.loads(client.get_pokemons())
-            #     algo.pokemons_from_json(pkOb)
-            #     algo.graph.pokemons.remove(p)
-            #     break
 
     # print(algo.graph.get_agents())
     # print(algo.graph.get_pokemons())
@@ -184,7 +173,7 @@ while client.is_running() == 'true':
             for next_node in findArr[1]:
                 client.choose_next_edge(
                     '{"agent_id":' + str(findArr[0].id) + ', "next_node_id":' + str(next_node) + '}')
-        elif (Agent.src == edge.src and Agent.dest == edge.dest) or (Agent.src == edge.dest and Agent.dest == edge.src):
+        elif (Agent.src == edge.src and Agent.dest == edge.dest) or (Agent.src == edge.dest and Agent.dest == edge.src) :
             algo.graph.pokemons.remove(pok)
 
     client.move()
