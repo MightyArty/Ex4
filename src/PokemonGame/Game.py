@@ -21,7 +21,7 @@ agent_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "agent.png"
 pokemon_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "pokemon1.png"))
 pokemon_2_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "pokemon2.png"))
 quit_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "quit.png"))
-background_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "background1.webp"))
+background_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "background4.jpg"))
 
 
 quit_button = Button(0, 0, quit_img)
