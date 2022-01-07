@@ -61,8 +61,8 @@ The pokemons are spread all over the graph edges, and the agents looking for the
 </br>`Game` - the actual implementation of all the classes together to perfectly working algorithm of the Pokemon Game 
 
 # GUI - using pygame:
-![Screen Shot 2022-01-07 at 0 58 07](https://user-images.githubusercontent.com/77808208/148464205-05e66772-e73c-4c08-9c3f-4259eb0f1902.png)
 
+![Screen Shot 2022-01-07 at 12 07 51](https://user-images.githubusercontent.com/77808208/148528228-bcf6f8c9-d14f-4f49-8a19-5e77dab86879.png)
 
 
 
