@@ -64,6 +64,9 @@ The pokemons are spread all over the graph edges, and the agents looking for the
 
 ![Screen Shot 2022-01-07 at 12 07 51](https://user-images.githubusercontent.com/77808208/148528228-bcf6f8c9-d14f-4f49-8a19-5e77dab86879.png)
 
+# Game results:
+To see the rueslts please click here --> [Results](https://github.com/MightyArty/Ex4/wiki/Game-results)
+
 # UML Diagram:
 
 ![](https://i.ibb.co/3h5pBSG/matala1-1.png)
