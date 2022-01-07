@@ -64,5 +64,11 @@ The pokemons are spread all over the graph edges, and the agents looking for the
 
 ![Screen Shot 2022-01-07 at 12 07 51](https://user-images.githubusercontent.com/77808208/148528228-bcf6f8c9-d14f-4f49-8a19-5e77dab86879.png)
 
+# How to run the game:
+**Clone this repository firsly, open the project and run the following command in the terminal :**
+![Screen Shot 2022-01-07 at 12 14 09](https://user-images.githubusercontent.com/77808208/148528949-512f87ed-2c11-46cc-8e68-5df0b0aac91c.png)
+
+The number 10 after the jar line is the case that you would like to run [0-15]
+
 
 
