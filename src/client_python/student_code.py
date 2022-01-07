@@ -7,7 +7,7 @@ import pygame
 import math
 from Button import Button
 import json
-
+import os
 from src.Graph.GraphAlgo import GraphAlgo
 
 WIDTH, HEIGHT = 1080, 720
@@ -19,10 +19,12 @@ HOST = "127.0.0.1"
 radius = 15
 
 # Images for the GUI
-agent_img = pygame.image.load("/Users/david/Desktop/Ex4/assets/agent.png")
-pokemon_img = pygame.image.load("/Users/david/Desktop/Ex4/assets/pokemon1.png")
-pokemon_2_img = pygame.image.load("/Users/david/Desktop/Ex4/assets/pokemon2.png")
-quit_img = pygame.image.load("/Users/david/Desktop/Ex4/assets/quit.png")
+agent_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "agent.png"))
+pokemon_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "pokemon1.png"))
+pokemon_2_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "pokemon2.png"))
+quit_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "quit.png"))
+
+
 
 quit_button = Button(0, 0, quit_img)
 
@@ -220,7 +222,6 @@ while client.is_running() == "true":
     if len(algo.graph.pokemons) != sizeOfPokemons:
         pkOb = json.loads(client.get_pokemons())
         algo.pokemons_from_json(pkOb)
-        print(algo.graph.pokemons)
     # check events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -253,7 +254,6 @@ while client.is_running() == "true":
             color = pygame.Color(239, 71, 111) if isForward else pygame.Color(6, 214, 160)
 
             # find the edge nodes
-
 
             # scaled positions
             src_x, src_y, src_z = algo.graph.get_all_v()[src].get_pos()
@@ -323,7 +323,7 @@ while client.is_running() == "true":
             for next_node in findArr[1]:
                 client.choose_next_edge(
                     '{"agent_id":' + str(findArr[0].id) + ', "next_node_id":' + str(next_node) + '}')
-        elif (Agent.src == edge.src and Agent.dest == edge.dest) or (Agent.src == edge.dest and Agent.dest == edge.src):
+        elif Agent.src == edge.src and Agent.dest == edge.dest:
             algo.graph.pokemons.remove(pok)
 
             # print(algo.graph.pokemons)
