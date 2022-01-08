@@ -39,3 +39,12 @@ class TestGraphAlgo(TestCase):
     def test_plot_graph(self):
         graph.load_from_json(file)
         graph.plot_graph()
+
+    def test_find_pokemon(self):
+        graph.load_from_json("/Users/valhalla/PycharmProjects/Ex4/data/A1")
+        value = 5
+        type = -1
+        pos: tuple = (35.19805902663438, 32.10525428067227, 0.0)
+        pok = Pokemon(value, type, pos)
+        graph.graph.add_pokemon(pok)
+        self.assertTrue(graph.find_pokemon_edge(pok))

@@ -43,8 +43,6 @@ class TestDiGraph(TestCase):
         a = graph.get_mc()
         self.assertEqual(a, 7)
 
-
-
     def test_add_edge(self):
         before = graph.e_size()
         graph.add_edge(1, 2, 1)
@@ -80,3 +78,6 @@ class TestDiGraph(TestCase):
         self.assertNotEqual(e, before)
         flag = graph.remove_edge(99, 92).__bool__()
         self.assertEqual(flag, False)
+
+
+

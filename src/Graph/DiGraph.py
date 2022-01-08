@@ -40,6 +40,9 @@ class DiGraph(GraphInterface):
         self.agents[agent.id] = agent
         return True
 
+    def add_pokemon(self, pokemon: Pokemon) -> bool:
+        self.pokemons.append(pokemon)
+
     def remove_pokemon(self, pokemon: Pokemon) -> bool:
         del self.pokemons[pokemon]
         return True
