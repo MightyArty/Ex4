@@ -60,9 +60,24 @@ The pokemons are spread all over the graph edges, and the agents looking for the
 </br>`Client` - all the game info (port,ip...) and dealing with the actual connetion to the server of the game
 </br>`Game` - the actual implementation of all the classes together to perfectly working algorithm of the Pokemon Game 
 
-# GUI - using pygame:
+# GUI - short video :
+**Click below to see a short video of our game**
 
-![Screen Shot 2022-01-07 at 12 07 51](https://user-images.githubusercontent.com/77808208/148528228-bcf6f8c9-d14f-4f49-8a19-5e77dab86879.png)
+[![CLICK HERE](https://user-images.githubusercontent.com/77808208/148528228-bcf6f8c9-d14f-4f49-8a19-5e77dab86879.png)](https://youtu.be/c6eJEzhy5GY "CLICK HERE")
+
+# Game results:
+To see the rueslts please click here --> [Results](https://github.com/MightyArty/Ex4/wiki/Game-results)
+
+# UML Diagram:
+
+![](https://i.ibb.co/3h5pBSG/matala1-1.png)
+
+
+# How to run the game:
+**Clone this repository firsly, open the project and run the following command in the terminal :**
+![Screen Shot 2022-01-07 at 12 14 09](https://user-images.githubusercontent.com/77808208/148528949-512f87ed-2c11-46cc-8e68-5df0b0aac91c.png)
+
+The number 10 after the jar line is the case that you would like to run [0-15]
 
 
 
