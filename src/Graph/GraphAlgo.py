@@ -31,42 +31,6 @@ class GraphAlgo(GraphAlgoInterface):
                 graph.add_edge(node.id, edge, weight)
         return graph
 
-    """
-        Loads a graph from a json file.
-        @param file_name: The path to the json file
-        @returns True if the loading was successful, False o.w.
-    """
-
-    def load_from_json(self, file_name: str) -> bool:
-        graph = DiGraph()
-        Edges: list
-        Nodes: list
-        try:
-            with open(file_name, 'r') as f:
-                r = json.load(f)
-                Edges = r["Edges"]
-                Nodes = r["Nodes"]
-
-                for node in Nodes:
-                    try:
-                        out = node["pos"].split(',')
-                        pos = (float(out[0]), float(out[1]), float(out[2]))
-                    except Exception:
-                        pointX = random.randint(5, 50)
-                        pointY = random.randint(5, 50)
-                        pos = (pointX, pointY, 0.0)
-
-                    graph.add_node(node["id"], pos)
-
-                for edge in Edges:
-                    graph.add_edge(edge["src"], edge["dest"], edge["w"])
-                self.graph = graph
-                print("Successfully loaded from json format")
-                return True
-        except():
-            print("Error in loading from json format")
-            return False
-
     def load_graph(self, object: dict):
         graph = DiGraph()
         Edges: list
@@ -79,6 +43,10 @@ class GraphAlgo(GraphAlgoInterface):
             graph.add_edge(edge["src"], edge["dest"], edge["w"])
         self.graph = graph
 
+    """
+    Gets a string of pokemons from client
+    And saves it as json
+    """
     def pokemon_to_json(self, pokemons: dict) -> list:
         # graph = DiGraph()
         self.graph.pokemons.clear()
@@ -92,6 +60,10 @@ class GraphAlgo(GraphAlgoInterface):
             self.graph.pokemons.append(pokemon)
         self.__init__(self.graph)
 
+    """
+    Gets a string of agents from client
+    And saves it to dict()
+    """
     def agent_to_json(self, agents: dict) -> dict():
         # graph = DiGraph()
         for a in agents['Agents']:
@@ -205,179 +177,6 @@ class GraphAlgo(GraphAlgoInterface):
             return -1, ansArr
 
     """
-        Finds the shortest path that visits all the nodes in the list
-        param: node_lst: A list of nodes id's
-        return: A list of the nodes id's in the path, and the overall distance
-    """
-
-    def TSP(self, node_lst: List[int]) -> (List[int], float):
-        if (node_lst is None) or len(node_lst) < 1:
-            print("The list should not be empty !")
-            return [], -1
-
-        # if there are only one node in the given list
-        # just return this node
-        if len(node_lst) == 1:
-            return [node_lst, 0]
-
-        output = []
-        destination = 0
-        tempList = copy.deepcopy(node_lst)  # copy of the given list
-
-        # go from start to the last node of the list and compare
-        # each 2 nodes [0,1],[1,2]...[n-1,n]
-        for runner in range(0, len(tempList) - 1):
-            first = tempList[runner]
-            second = tempList[runner + 1]
-            currentDist = self.shortest_path(first, second)[1]
-            destination = destination + self.shortest_path(first, second)[0]
-
-            for i in currentDist:
-                if not output.__contains__(i):
-                    output.append(i)
-        return output, destination
-
-    def centerPoint(self) -> (int, float):
-        size = len(self.graph.nodesMap)
-        matrix = []
-        # creating a matrix [][]
-        for i in range(size):
-            a = []
-            for j in range(size):
-                if i == j:
-                    a.append(0)
-                else:
-                    a.append(float('inf'))
-            matrix.append(a)
-        # setting the vertexes
-        for i in range(size):
-            keys = self.graph.all_out_edges_of_node(i).keys()
-            for j in range(size):
-                if keys.__contains__(j):
-                    Edge = self.graph.edgesMap[i]
-                    matrix[i][j] = Edge[j].weight
-        # updating the matrix according to the FW algo
-        for k in range(size):
-            for i in range(size):
-                for j in range(size):
-                    if matrix[i][j] > matrix[i][k] + matrix[k][j]:
-                        matrix[i][j] = matrix[i][k] + matrix[k][j]
-
-        id = -1
-        minMax = float('inf')
-        # finding the minimum from the maximum between all the rows
-        for i in range(size):
-            max = -1
-            for j in range(size):
-                if matrix[i][j] > max:
-                    max = matrix[i][j]
-                if max == float('inf'):
-                    return float('inf')
-            if minMax > max:
-                id = i  # updates the center ID
-                minMax = max  # updates center's weight
-        return id, minMax
-
-    """
-        Plots the graph.
-        If the nodes have a position, the nodes will be placed there.
-        Otherwise, they will be placed in a random but elegant manner.
-        @return: None
-    """
-
-    def plot_graph(self) -> None:
-        # define dimensions of figure and axis
-
-        fig, (ax1) = plt.subplots(figsize=(15, 15))  # set image dimensions
-
-        nodes = self.graph.get_all_v()  # (node_key: int, (x,y,z) :tuple)
-        nodes_keys = nodes.keys()
-        for i in nodes.values():
-            if i.pos is None:
-                i.pos = (random.random() * 15, random.random() * 15, 0.0)
-
-        else:
-
-            x_values = [nodes[id].pos[0] for id in nodes_keys]
-            y_values = [nodes[id].pos[1] for id in nodes_keys]
-
-        # Construct a set of all class edge
-        arrows = set()
-        for v in nodes:
-            start = (nodes[v].pos[0], nodes[v].pos[1])
-            outgoing_edges = self.graph.all_out_edges_of_node(v)
-
-            for e in outgoing_edges.keys():
-                weight = outgoing_edges[e]
-                dest_id = e
-
-                end_x_value = nodes[dest_id].pos[0]
-                end_y_value = nodes[dest_id].pos[1]
-                end = (end_x_value, end_y_value)
-                coordsA = "data"
-                coordsB = "data"
-                arrows.add(
-                    ConnectionPatch(start, end, coordsA, coordsB, arrowstyle="-|>", shrinkA=5, shrinkB=5, linewidth=2,
-                                    color="r", mutation_scale=30))
-
-        # plot the nodes
-        plt.scatter(x_values, y_values, color="b", marker="o", s=100 * 2)
-        # plot the ids
-        for i in nodes:
-            plt.text(x_values[i], y_values[i], f'{nodes[i]}', ha='right', fontsize=25)  # add node id
-        # plot edges
-        for edge in arrows:
-            ax1.add_artist(edge)
-        plt.tight_layout()
-        plt.show()
-
-    def start_pos(self, pok: list):
-        algo = GraphAlgo()
-        ans = list
-        sizeOfDup = {}
-        pq = queue.PriorityQueue()
-        for p in pok:
-            for Dict in algo.graph.edgesMap.values():
-                for edge in Dict.values():
-                    srcPos = algo.graph.nodesMap[edge.src].pos
-                    destPos = algo.graph.nodesMap[edge.dest].pos
-                    if p.isOn(srcPos[0], srcPos[1], destPos[0], destPos[1]):
-                        ans.append(edge)
-                        if sizeOfDup[edge] is None:
-                            sizeOfDup[edge] = 1
-                            pq.put(1, edge)
-                        else:
-                            pq.get()
-                            size = sizeOfDup[edge] + 1
-                            sizeOfDup[edge] = size
-                            num = sizeOfDup[edge]
-                            pq.put(num * (-1), edge)
-
-        return ans, pq
-
-    def allocateAgents(self, agents: {}, pokemons: list):
-        allocate = self.start_pos()
-        pokEdges = allocate[0]
-        # compares the length of agents to pokemons
-        if len(agents) >= len(pokemons):
-            # setting the agents to be on the edge's pokemon src
-            for index in range(len(pokEdges)):
-                pokSrc = pokEdges[index].src
-                pokDest = pokEdges[index].dest
-                agents[index].set_src(self.graph.nodesMap[pokSrc].src)
-                agents[index].set_dest(self.graph.nodesMap[pokDest].dest)
-                agents[index].set_pos(self.graph.nodesMap[pokSrc].pos)
-            center = self.centerPoint()
-            index = len(pokEdges)
-            # deals with the leftover agents
-            while index < len(agents):
-                agents[index].setPos = self.graph.nodesMap[center[0]].pos
-                agents[index].setSrc = center[0]
-                index += 1
-        else:
-            pq = allocate[1]
-
-    """
     Calculating the time that takes for the agent to catch the pokemon
     @:param agent, src of the pokemon
     @:return the best time and list of shortest path
@@ -436,7 +235,3 @@ class GraphAlgo(GraphAlgoInterface):
                 out = time[1]
                 out.append(edge.dest)
         return temp, out, edge
-
-    # if the src of the agent == dest of pokemon
-    # then go to the src of the pokemon
-    # and then add the dest of the pokemon

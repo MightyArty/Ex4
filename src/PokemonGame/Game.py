@@ -23,7 +23,6 @@ pokemon_2_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "pokemo
 quit_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "quit.png"))
 background_img = pygame.image.load(os.path.join(os.path.curdir, "assets", "background4.jpg"))
 
-
 quit_button = Button(0, 0, quit_img)
 
 
@@ -228,8 +227,8 @@ while client.is_running() == "true":
 
     # refresh surface
     screen.fill(pygame.Color(0, 0, 0))
-    top = screen.get_height() -HEIGHT
-    corner = screen.get_width() -WIDTH
+    top = screen.get_height() - HEIGHT
+    corner = screen.get_width() - WIDTH
     screen.blit(background_img, (top, corner))
 
     # draw nodes
@@ -252,9 +251,6 @@ while client.is_running() == "true":
             dest = e
             isForward = dest > src
             color = pygame.Color(239, 71, 111) if isForward else pygame.Color(6, 214, 160)
-
-
-
 
             # scaled positions
             src_x, src_y, src_z = algo.graph.get_all_v()[src].get_pos()
