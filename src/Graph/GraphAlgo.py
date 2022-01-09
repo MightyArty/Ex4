@@ -7,6 +7,7 @@ from typing import List
 from matplotlib import pyplot as plt
 from matplotlib.patches import ConnectionPatch
 
+
 from src.Graph.GraphAlgoInterface import GraphAlgoInterface
 from src.Graph.DiGraph import DiGraph
 from src.Graph.GraphInterface import GraphInterface
