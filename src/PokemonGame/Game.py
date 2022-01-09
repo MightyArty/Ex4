@@ -13,7 +13,6 @@ PORT = 6666
 
 # server host (default localhost 127.0.0.1)
 HOST = "127.0.0.1"
-
 radius = 15
 
 # Images for the GUI (independent way)
