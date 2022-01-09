@@ -10,7 +10,7 @@ algo = GraphAlgo()
 file = os.path.join(os.path.curdir, "A0")
 client = Client()
 
-
+ 
 class TestGraphAlgo(TestCase):
     def test_get_graph(self):
         e = algo.graph
