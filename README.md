@@ -40,12 +40,9 @@ The pokemons are spread all over the graph edges, and the agents looking for the
 # Part II - GraphAlgo class (implements GraphAlgoInterface):
   **In this class we have the next functions :**
 </br>`get_graph()` - return the init graph
-</br>`load_from_json()` - save the graph to a json file with the given file name
+</br>`load_json` - save the graph to a json file with the given file name
 </br>`save_to_json()` - load the graph from a json file by the give file name
 </br>`shortest_path()` - compute the shortest path between to nodes using Dijkstra's algorithm, and return (weight, path)
-</br>`TSP()` - Finds the shortest path that visits all the nodes in the list
-</br>`centerPoint()` - Finds the node that has the shortest distance to it's farthest node.
-</br>`plot_graph()` - plot the graph to a window using matplotlib
 </br>`pokemon_to_json` - given string of pokemons, get's all the data of each pokemon and adding it to the list of our pokemons in the graph
 </br>`agent_to_json` - given string of agents, get's all the data of each agent and adding it to the dict() of our agents in the graph
 </br>`time_to_catch` - calculating the time needed for agent to catch the pokemon
