@@ -1,5 +1,5 @@
  ![GitHub contributors](https://img.shields.io/github/contributors/MightyArty/Ex4?style=plastic) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/MightyArty/Ex4?style=plastic)
-# Autores: Artem Shabalin, David Yosopov and Lior Patael
+# Autores: Tom Shabalin, David Yosopov and Lior Patael
 
 
 ![index](https://user-images.githubusercontent.com/77808208/148431522-dd3d2c56-c675-4c79-a39e-6dbda8880f2f.jpg)
